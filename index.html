@@ -5,346 +5,1643 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="Two working workflow tools by Hemant Sarthak: document review and IT triage, built with React and a Jev decision adapter."
+      content="Folio and Relay: two working workflow tools for a modern tax team by Hemant Sarthak, with a validated Jev decision adapter."
     />
-    <title>Hemant Sarthak — Workflow lab</title>
+    <title>Hemant Sarthak — Folio & Relay</title>
     <style>
+      :root {
+        --bg: #1b1c1e;
+        --bg-2: #222326;
+        --panel: #26272a;
+        --line: #333438;
+        --line-2: #44464b;
+        --text: #c8cacf;
+        --text-strong: #eceef2;
+        --muted: #999ba0;
+        --faint: #6f7177;
+        --btn: #f0f1f5;
+        --teal: #7fb3ba;
+        --teal-deep: #0e4c55;
+        --amber: #e0a458;
+        --serif:
+          "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+        --sans: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+        --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+      }
       * {
         box-sizing: border-box;
       }
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         margin: 0;
-        background: #f5f3ed;
-        color: #182d29;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font: 16px/1.6 var(--sans);
+        -webkit-font-smoothing: antialiased;
       }
-      header,
-      main,
-      footer {
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--teal);
+        outline-offset: 3px;
+      }
+      .wrap {
         max-width: 1180px;
-        margin: auto;
-        padding: 28px 40px;
+        margin: 0 auto;
+        padding: 0 32px;
       }
-      header {
+      /* Nav */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav .wrap {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #dbdfd5;
-        font-size: 13px;
+        gap: 28px;
+        height: 64px;
       }
-      header strong {
+      .logo {
+        font: 17px/1 var(--serif);
+        color: var(--text-strong);
+        border: 1px solid var(--text-strong);
+        padding: 6px 9px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .nav-links {
+        display: flex;
+        gap: 22px;
+        font-size: 14px;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text);
+      }
+      .nav-links a:hover {
+        color: #fff;
+      }
+      .nav-cta {
+        margin-left: auto;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 6px;
+        padding: 11px 18px;
         font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        border: 1px solid transparent;
       }
-      .dot {
+      .btn-light {
+        background: var(--btn);
+        color: var(--bg);
+      }
+      .btn-light:hover {
+        background: #fff;
+      }
+      .btn-ghost {
+        border-color: var(--line-2);
+        color: var(--text-strong);
+      }
+      .btn-ghost:hover {
+        border-color: var(--text);
+      }
+      .btn-sm {
+        padding: 8px 14px;
+        font-size: 14px;
+      }
+      /* Hero */
+      .hero {
+        padding: 110px 0 70px;
+        text-align: center;
+      }
+      .kicker {
         display: inline-block;
-        width: 8px;
-        height: 8px;
-        background: #6f8866;
-        border-radius: 100%;
-        margin-right: 8px;
+        font-size: 13px;
+        color: var(--muted);
+        border: 1px solid var(--line-2);
+        border-radius: 999px;
+        padding: 5px 14px;
+        margin-bottom: 28px;
       }
-      main {
-        padding-top: 75px;
-      }
-      small {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-weight: 700;
-        color: #68736b;
+      h1,
+      h2,
+      h3 {
+        font-family: var(--serif);
+        font-weight: 400;
+        color: var(--text-strong);
+        letter-spacing: -0.015em;
       }
       h1 {
-        font:
-          normal clamp(42px, 6vw, 76px)/1.02 Georgia,
-          serif;
-        letter-spacing: -2px;
-        max-width: 800px;
-        margin: 20px 0;
+        font-size: clamp(40px, 6.2vw, 72px);
+        line-height: 1.05;
+        margin: 0 auto 26px;
+        max-width: 900px;
       }
-      p {
-        color: #5d6a63;
-        line-height: 1.7;
-        max-width: 630px;
+      .lede {
+        font-size: 18px;
+        color: var(--muted);
+        max-width: 680px;
+        margin: 0 auto 36px;
       }
+      .lede strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .hero-ctas {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin: 80px 0 0;
+      }
+      .stats div {
+        padding: 28px 16px;
+        border-right: 1px solid var(--line);
+        text-align: center;
+      }
+      .stats div:last-child {
+        border-right: 0;
+      }
+      .stats b {
+        display: block;
+        font: 600 40px/1.1 var(--sans);
+        color: var(--text-strong);
+        letter-spacing: -0.02em;
+      }
+      .stats span {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      /* Sections */
+      section.block {
+        padding: 100px 0;
+        border-top: 1px solid var(--line);
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin: 0 0 14px;
+      }
+      h2 {
+        font-size: clamp(32px, 4.4vw, 52px);
+        line-height: 1.1;
+        margin: 0 0 18px;
+      }
+      .section-lede {
+        color: var(--muted);
+        font-size: 17px;
+        max-width: 720px;
+        margin: 0 0 48px;
+      }
+      /* Projects */
       .projects {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 24px;
-        margin-top: 45px;
       }
-      article {
-        border: 1px solid #d6dcd1;
-        border-radius: 20px;
-        background: #fffefa;
-        overflow: hidden;
+      .project {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--bg-2);
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
       }
-      article > a {
+      .project h3 {
+        font-size: 40px;
+        margin: 4px 0 6px;
+      }
+      .project .role {
+        font-size: 13px;
+        color: var(--teal);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .project p {
+        color: var(--muted);
+        margin: 8px 0 22px;
+      }
+      .personas {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+      .persona {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px;
+        background: var(--bg);
+      }
+      .persona b {
         display: block;
-        color: inherit;
+        color: var(--text-strong);
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .persona span {
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.5;
+        display: block;
+      }
+      .persona a {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--teal);
         text-decoration: none;
       }
-      article > a:focus-visible {
-        outline: 3px solid #b17428;
-        outline-offset: -4px;
+      .persona a:hover {
+        text-decoration: underline;
       }
-      .preview {
-        height: 205px;
-        padding: 28px;
-        background: #e5eadf;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .project ul {
+        margin: 0 0 26px;
+        padding: 0;
+        list-style: none;
+        font-size: 14.5px;
       }
-      .desk-preview {
-        background: #212d34;
-      }
-      .mini {
-        width: 88%;
-        background: #fffefa;
-        border-radius: 9px;
-        box-shadow: 0 12px 28px #17342817;
-        padding: 16px;
-      }
-      .mini-nav {
-        font-size: 12px;
-        font-weight: 700;
-        border-bottom: 1px solid #e2e6dd;
-        padding-bottom: 12px;
-        margin-bottom: 12px;
-      }
-      .mini-row {
-        display: flex;
-        gap: 12px;
-        align-items: center;
+      .project li {
         padding: 9px 0;
-        font-size: 10px;
-      }
-      .mini-row i {
-        display: block;
-        width: 24px;
-        height: 28px;
-        border: 1px solid #d6ddce;
-        border-radius: 4px;
-      }
-      .mini-row span {
-        flex: 1;
-      }
-      .pill {
-        padding: 4px 8px;
-        border-radius: 5px;
-        background: #e8efdf;
-        color: #4d6641;
-        font-size: 9px;
-      }
-      .amber {
-        background: #fff0d4;
-        color: #826020;
-      }
-      .copy {
-        padding: 28px;
-      }
-      h2 {
-        font:
-          normal 35px Georgia,
-          serif;
-        margin: 5px 0 8px;
-      }
-      .copy p {
-        font-size: 14px;
-        margin: 12px 0 22px;
-      }
-      .tags {
+        border-top: 1px solid var(--line);
         display: flex;
-        gap: 8px;
+        gap: 10px;
+      }
+      .project li::before {
+        content: "—";
+        color: var(--faint);
+      }
+      .project .actions {
+        margin-top: auto;
+        display: flex;
+        gap: 10px;
         flex-wrap: wrap;
       }
-      .tags span {
-        border: 1px solid #e0e3da;
-        border-radius: 20px;
-        padding: 4px 9px;
-        font-size: 10px;
-        color: #667267;
+      /* Jev */
+      .jev-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+        gap: 40px;
+        align-items: start;
       }
-      .launch {
+      .steps {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        counter-reset: s;
+      }
+      .steps li {
+        counter-increment: s;
+        position: relative;
+        padding: 0 0 26px 50px;
+      }
+      .steps li::before {
+        content: counter(s);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid var(--line-2);
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        color: var(--text-strong);
+      }
+      .steps li::after {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 34px;
+        bottom: 6px;
+        border-left: 1px dashed var(--line-2);
+      }
+      .steps li:last-child::after {
+        display: none;
+      }
+      .steps b {
+        display: block;
+        color: var(--text-strong);
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .steps span {
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .code {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #141517;
+        overflow: hidden;
+      }
+      .code-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--line);
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .code-tabs span {
+        padding: 10px 16px;
+        border-right: 1px solid var(--line);
+      }
+      .code-tabs span:first-child {
+        color: var(--text-strong);
+      }
+      pre {
+        margin: 0;
+        padding: 18px;
+        overflow-x: auto;
+        font: 12.5px/1.6 var(--mono);
+        color: #b9bcc2;
+      }
+      pre .k {
+        color: var(--teal);
+      }
+      pre .s {
+        color: #d7c29a;
+      }
+      pre .c {
+        color: var(--faint);
+      }
+      .code-label {
+        padding: 10px 18px 0;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      .guarantees {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin-top: 56px;
+      }
+      .guarantees div {
+        padding: 22px;
+        border-right: 1px solid var(--line);
+      }
+      .guarantees div:last-child {
+        border-right: 0;
+      }
+      .guarantees b {
+        display: block;
+        color: var(--text-strong);
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+      .guarantees span {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      /* Flow diagrams */
+      .flow {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--bg-2);
+        padding: 28px;
+        margin-bottom: 28px;
+      }
+      .flow-head {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        border-top: 1px solid #e4e7de;
-        margin-top: 22px;
-        padding-top: 18px;
+        align-items: baseline;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      .flow-head h3 {
+        font-size: 28px;
+        margin: 0;
+      }
+      .flow-head a {
+        font-size: 14px;
+        color: var(--teal);
+        text-decoration: none;
+      }
+      .flow-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        font-family: var(--sans);
+      }
+      .flow-life {
+        stroke: var(--line-2);
+        stroke-dasharray: 3 5;
+      }
+      .flow-lane {
+        fill: var(--bg);
+        stroke: var(--line-2);
+      }
+      .flow-app {
+        fill: #2d2e32;
+      }
+      .flow-server {
+        fill: #2d2e32;
+      }
+      .flow-jev {
+        fill: var(--teal-deep);
+        stroke: var(--teal);
+      }
+      .flow-lane-text {
+        fill: var(--text-strong);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .flow-msg {
+        stroke: var(--text);
+        stroke-width: 1.3;
+        fill: none;
+      }
+      .flow-res {
+        stroke-dasharray: 5 4;
+        stroke: var(--muted);
+      }
+      .flow-arrowhead {
+        fill: var(--text);
+      }
+      .flow-label {
+        fill: var(--text-strong);
+        font-size: 13.5px;
+      }
+      .flow-sub {
+        fill: var(--muted);
+        font-size: 11.5px;
+      }
+      .flow-list {
+        display: none;
+        list-style: none;
+        margin: 16px 0 0;
+        padding: 0;
+        counter-reset: f;
+      }
+      .flow-list li {
+        counter-increment: f;
+        padding: 12px 0;
+        border-top: 1px solid var(--line);
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .flow-list li::before {
+        content: counter(f) ". ";
+        color: var(--faint);
+      }
+      .flow-list strong {
+        display: block;
+        color: var(--text-strong);
+        font-weight: 500;
+        margin-top: 6px;
+      }
+      .flow-list small {
+        display: block;
         font-size: 13px;
-        font-weight: 650;
       }
-      .launch b {
-        font-size: 22px;
+      .chip {
+        display: inline-block;
+        font-size: 12px;
+        border: 1px solid var(--line-2);
+        border-radius: 999px;
+        padding: 1px 8px;
+        color: var(--text);
       }
-      article:hover {
-        border-color: #92a48b;
+      .chip-jev {
+        background: var(--teal-deep);
+        border-color: var(--teal);
+        color: #fff;
+      }
+      .legend {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        color: var(--muted);
+        margin: 8px 0 18px;
+      }
+      .legend i {
+        display: inline-block;
+        width: 28px;
+        vertical-align: middle;
+        margin-right: 6px;
+        border-top: 1.5px solid var(--text);
+      }
+      .legend i.dash {
+        border-top-style: dashed;
+        border-color: var(--muted);
+      }
+      .lifecycle {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin-top: 20px;
+      }
+      .lifecycle div {
+        padding: 18px;
+        border-right: 1px solid var(--line);
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .lifecycle div:last-child {
+        border-right: 0;
+      }
+      .lifecycle b {
+        display: block;
+        color: var(--text-strong);
+        margin-bottom: 4px;
+        font-weight: 600;
+      }
+      /* FAQ */
+      .faq {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 48px;
+      }
+      details {
+        border-top: 1px solid var(--line);
+        padding: 20px 0;
+      }
+      summary {
+        cursor: pointer;
+        color: var(--text-strong);
+        font-size: 17px;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "+";
+        color: var(--muted);
+      }
+      details[open] summary::after {
+        content: "–";
+      }
+      details p {
+        color: var(--muted);
+        font-size: 15px;
+        margin: 12px 0 0;
       }
       footer {
+        border-top: 1px solid var(--line);
+        padding: 36px 0 48px;
+        font-size: 13px;
+        color: var(--faint);
+      }
+      footer .wrap {
         display: flex;
         justify-content: space-between;
         gap: 24px;
-        font-size: 11px;
-        color: #717c73;
-        padding-top: 38px;
-        padding-bottom: 40px;
+        flex-wrap: wrap;
       }
-      footer p {
-        margin: 0;
-        max-width: 600px;
-      }
-      @media (max-width: 650px) {
-        header,
-        main,
-        footer {
-          padding-left: 22px;
-          padding-right: 22px;
-        }
-        header span {
-          max-width: 120px;
-          text-align: right;
-        }
-        main {
-          padding-top: 45px;
-        }
-        .projects {
+      @media (max-width: 960px) {
+        .projects,
+        .jev-grid,
+        .faq {
           grid-template-columns: 1fr;
         }
-        footer {
-          flex-direction: column;
+        .guarantees,
+        .lifecycle {
+          grid-template-columns: 1fr 1fr;
         }
-        .preview {
-          height: 180px;
+        .guarantees div:nth-child(2),
+        .lifecycle div:nth-child(2) {
+          border-right: 0;
+        }
+        .guarantees div:nth-child(-n + 2),
+        .lifecycle div:nth-child(-n + 2) {
+          border-bottom: 1px solid var(--line);
+        }
+        .nav-links {
+          display: none;
+        }
+      }
+      @media (max-width: 720px) {
+        .wrap {
+          padding: 0 16px;
+        }
+        .hero {
+          padding: 70px 0 50px;
+        }
+        .stats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .stats div:nth-child(2) {
+          border-right: 0;
+        }
+        .stats div:nth-child(-n + 2) {
+          border-bottom: 1px solid var(--line);
+        }
+        section.block {
+          padding: 70px 0;
+        }
+        .project,
+        .flow {
+          padding: 20px;
+        }
+        .personas {
+          grid-template-columns: 1fr;
+        }
+        .flow-svg {
+          display: none;
+        }
+        .flow-list {
+          display: block;
+        }
+        .legend {
+          display: none;
+        }
+        .guarantees,
+        .lifecycle {
+          grid-template-columns: 1fr;
+        }
+        .guarantees div,
+        .lifecycle div {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .guarantees div:last-child,
+        .lifecycle div:last-child {
+          border-bottom: 0;
+        }
+        .nav-cta .btn-ghost {
+          display: none;
         }
       }
     </style>
   </head>
   <body>
-    <header>
-      <strong>HS / Hemant Sarthak</strong
-      ><span
-        ><i class="dot"></i
-        ><a href="/case-study.html" style="color: inherit"
-          >Read the case studies</a
-        ></span
-      >
+    <nav class="nav" aria-label="Site">
+      <div class="wrap">
+        <a class="logo" href="/">Hemant Sarthak</a>
+        <div class="nav-links">
+          <a href="#projects">Projects</a>
+          <a href="#jev">How Jev fits</a>
+          <a href="#flows">Data flow</a>
+          <a href="#faq">FAQ</a>
+          <a href="/case-study.html">Case study</a>
+        </div>
+        <div class="nav-cta">
+          <a
+            class="btn btn-ghost btn-sm"
+            href="https://github.com/hemantsarthak/folio-relay-workflow-lab"
+            >Source ↗</a
+          >
+          <a class="btn btn-light btn-sm" href="#projects">Try the apps</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="wrap">
+        <span class="kicker"
+          >Portfolio projects for Rivet’s frontend &amp; IT roles</span
+        >
+        <h1>Less chasing. More work, done.</h1>
+        <p class="lede">
+          Two working tools for the people behind a tax return.
+          <strong>Folio</strong> runs the preparer ↔ client document loop.
+          <strong>Relay</strong> gives employees a place to ask for help and the
+          IT hire a queue they can own. Both route work with
+          <strong>Jev</strong> and keep a person in charge of the decision.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-light" href="/apps/tax/">Open Folio →</a>
+          <a class="btn btn-ghost" href="/apps/it/">Open Relay →</a>
+        </div>
+        <div class="stats" aria-label="At a glance">
+          <div><b>2</b><span>working apps</span></div>
+          <div><b>4</b><span>roles you can switch between</span></div>
+          <div><b>32</b><span>automated tests</span></div>
+          <div><b>0</b><span>real client or employee data</span></div>
+        </div>
+      </div>
     </header>
-    <main>
-      <small>Workflow lab / 01—02</small>
-      <h1>Less friction.<br />More work, done.</h1>
-      <p>
-        Two working operations tools for the people behind a tax return. Follow
-        a missing document through client response and review, or take an
-        employee from onboarding records to support and offboarding.
-      </p>
-      <section class="projects" aria-label="Projects">
-        <article>
-          <a href="/apps/tax/"
-            ><div class="preview" aria-hidden="true">
-              <div class="mini">
-                <div class="mini-nav">
-                  ◈ folio
-                  <span style="float: right; color: #78836e"
-                    >DOCUMENT INBOX</span
-                  >
-                </div>
-                <div class="mini-row">
-                  <i></i><span>Wage statement · 2025</span
-                  ><b class="pill">W-2</b>
-                </div>
-                <div class="mini-row">
-                  <i></i><span>Partner distribution</span
-                  ><b class="pill">K-1</b>
-                </div>
-                <div class="mini-row">
-                  <i></i><span>Client attachment</span
-                  ><b class="pill amber">Needs review</b>
-                </div>
+
+    <section class="block" id="projects">
+      <div class="wrap">
+        <p class="eyebrow">01 · The projects</p>
+        <h2>Two sides of every workflow.</h2>
+        <p class="section-lede">
+          Each app has a person asking and a person doing the work. Switch
+          between them inside the app to see both views of the same record. Each
+          app opens on a one-minute walkthrough.
+        </p>
+        <div class="projects">
+          <article class="project">
+            <span class="role">Frontend engineering</span>
+            <h3>Folio</h3>
+            <p>
+              A client workspace where a missing tax document becomes a specific
+              request, a client upload, a routed suggestion and a verified
+              checklist item.
+            </p>
+            <div class="personas">
+              <div class="persona">
+                <b>Preparer</b
+                ><span
+                  >Sees what’s missing per client and year, requests it, reviews
+                  what comes back.</span
+                ><a href="/apps/tax/#case">Start as preparer →</a>
+              </div>
+              <div class="persona">
+                <b>Client</b
+                ><span
+                  >Gets one clear ask and uploads a PDF. No tax jargon, no
+                  guessing which form.</span
+                ><a href="/apps/tax/#case">Switch to client view →</a>
               </div>
             </div>
-            <div class="copy">
-              <small>01 / Frontend engineering</small>
-              <h2>Folio</h2>
-              <p>
-                A client workspace with document requests, source review, and a
-                checklist that distinguishes missing files from verified
-                evidence.
-              </p>
-              <div class="tags">
-                <span>React + TypeScript</span><span>Client workflow</span
-                ><span>Jev integration</span>
+            <ul>
+              <li>
+                PDF text read in the browser with PDF.js; nothing uploaded
+              </li>
+              <li>Wrong-year documents can’t close a request</li>
+              <li>
+                React, TypeScript, TanStack Query, typed state transitions
+              </li>
+            </ul>
+            <div class="actions">
+              <a class="btn btn-light btn-sm" href="/apps/tax/">Open Folio</a>
+              <a
+                class="btn btn-ghost btn-sm"
+                href="https://github.com/hemantsarthak/folio-relay-workflow-lab/tree/main/apps/tax"
+                >Code ↗</a
+              >
+            </div>
+          </article>
+          <article class="project">
+            <span class="role">IT engineering</span>
+            <h3>Relay</h3>
+            <p>
+              IT support and access for a small, fast team: a help portal for
+              employees, a queue for IT, and an offboarding audit that finds
+              access left switched on.
+            </p>
+            <div class="personas">
+              <div class="persona">
+                <b>Employee</b
+                ><span
+                  >Picks what’s wrong, describes it, and follows progress from
+                  Submitted to Resolved.</span
+                ><a href="/apps/it/#portal">Raise a request →</a>
               </div>
-              <div class="launch">Try the client workspace <b>↗</b></div>
-            </div></a
-          >
-        </article>
-        <article>
-          <a href="/apps/it/"
-            ><div class="preview desk-preview" aria-hidden="true">
-              <div class="mini">
-                <div class="mini-nav">
-                  ↗ relay
-                  <span style="float: right; color: #a97932"
-                    >SUPPORT OPERATIONS</span
-                  >
-                </div>
-                <div class="mini-row">
-                  <b style="color: #cb7346">●</b
-                  ><span>Remote session keeps freezing</span
-                  ><b class="pill amber">Investigating</b>
-                </div>
-                <div class="mini-row">
-                  <b style="color: #708668">●</b><span>DNS lookup</span
-                  ><b class="pill">Passed</b>
-                </div>
-                <div class="mini-row">
-                  <b style="color: #708668">●</b><span>System disk space</span
-                  ><b class="pill">Passed</b>
-                </div>
+              <div class="persona">
+                <b>IT admin</b
+                ><span
+                  >Owns the queue, runbooks and diagnostics, plus onboarding and
+                  offboarding records.</span
+                ><a href="/apps/it/#queue">Open the queue →</a>
               </div>
             </div>
-            <div class="copy">
-              <small>02 / IT engineering</small>
-              <h2>Relay</h2>
-              <p>
-                Employee access, offboarding checks, and support ownership.
-                Investigate repeated reports with a queue that carries the next
-                step.
-              </p>
-              <div class="tags">
-                <span>PowerShell collector</span><span>Lifecycle + audit</span
-                ><span>Jev integration</span>
-              </div>
-              <div class="launch">Try the IT workspace <b>↗</b></div>
-            </div></a
+            <ul>
+              <li>Read-only PowerShell diagnostics collector</li>
+              <li>Roster × SaaS × device reconciliation for offboarding</li>
+              <li>
+                Repeated reports grouped so outages aren’t fixed five times
+              </li>
+            </ul>
+            <div class="actions">
+              <a class="btn btn-light btn-sm" href="/apps/it/">Open Relay</a>
+              <a
+                class="btn btn-ghost btn-sm"
+                href="https://github.com/hemantsarthak/folio-relay-workflow-lab/tree/main/apps/it"
+                >Code ↗</a
+              >
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="jev">
+      <div class="wrap">
+        <p class="eyebrow">02 · How Jev fits</p>
+        <h2>A model answers a narrow question. Code decides what happens.</h2>
+        <p class="section-lede">
+          Jev is a structured-decision model from TypeSafe, called here through
+          OpenCode Zen. Instead of asking it to “handle” a document or ticket,
+          the server asks two typed questions and gets back probabilities it can
+          check.
+        </p>
+        <div class="jev-grid">
+          <ol class="steps">
+            <li>
+              <b>The browser sends plain text</b
+              ><span
+                >Folio extracts PDF text locally; Relay sends the ticket title
+                and description. <code>POST /api/classify</code> with
+                <code>kind</code>, <code>text</code> and
+                <code>mode</code>.</span
+              >
+            </li>
+            <li>
+              <b>The server asks two questions</b
+              ><span
+                >A <em>choice</em> question (which category, from a fixed list
+                with written criteria) and a <em>noul</em> question (does this
+                need a person’s attention now?). Content is treated as data, not
+                instructions.</span
+              >
+            </li>
+            <li>
+              <b>The answer is validated</b
+              ><span
+                >Unknown labels, out-of-range scores or probabilities that don’t
+                sum to 1 are rejected with a visible error. Nothing is applied.
+                Live mode never silently falls back to rules.</span
+              >
+            </li>
+            <li>
+              <b>Code and people take it from there</b
+              ><span
+                >Folio compares the tax year in code; Relay picks a runbook. A
+                preparer or IT admin confirms, overrides, and closes. Every step
+                lands in an audit trail.</span
+              >
+            </li>
+          </ol>
+          <div class="code" aria-label="Example Jev exchange">
+            <div class="code-tabs">
+              <span>server/decisions.mjs</span><span>request → answer</span>
+            </div>
+            <p class="code-label">Request (key stays on the server)</p>
+            <pre><span class="c">// POST https://opencode.ai/zen/v1/systemone</span>
+{
+  <span class="k">"model"</span>: <span class="s">"jev-1.13-free"</span>,
+  <span class="k">"state"</span>: { <span class="k">"content"</span>: <span class="s">"Schedule K-1 … Tax year: 2024"</span> },
+  <span class="k">"questions"</span>: {
+    <span class="k">"category"</span>: {
+      <span class="k">"type"</span>: <span class="s">"choice"</span>,
+      <span class="k">"criteria"</span>: {
+        <span class="k">"W-2"</span>: <span class="s">"…"</span>, <span class="k">"1099"</span>: <span class="s">"…"</span>, <span class="k">"K-1"</span>: <span class="s">"…"</span>,
+        <span class="k">"Receipt"</span>: <span class="s">"…"</span>, <span class="k">"Other"</span>: <span class="s">"…"</span>
+      }
+    },
+    <span class="k">"attention"</span>: {
+      <span class="k">"type"</span>: <span class="s">"noul"</span>,
+      <span class="k">"instructions"</span>: <span class="s">"Missing or conflicting info?"</span>
+    }
+  }
+}</pre>
+            <p class="code-label">Answer (checked before use)</p>
+            <pre>{
+  <span class="k">"answers"</span>: {
+    <span class="k">"category"</span>:  { <span class="k">"choice"</span>: <span class="s">"K-1"</span>, <span class="k">"confidence"</span>: 0.93,
+                   <span class="k">"probabilities"</span>: { <span class="k">"K-1"</span>: 0.93, <span class="k">"Other"</span>: 0.04, … } },
+    <span class="k">"attention"</span>: { <span class="k">"noul"</span>: 0.12 }
+  }
+}
+<span class="c">// Illustrative values. The tax year (2024 ≠ 2025)
+// is checked in code, not by Jev.</span></pre>
+          </div>
+        </div>
+        <div class="guarantees">
+          <div>
+            <b>Server-side key</b
+            ><span
+              >Never in frontend code or a <code>VITE_</code> variable.</span
+            >
+          </div>
+          <div>
+            <b>Local rules by default</b
+            ><span>Inspectable keyword rules, clearly labelled as such.</span>
+          </div>
+          <div>
+            <b>Fails loudly</b
+            ><span
+              >Timeouts, rate limits and bad answers surface as errors.</span
+            >
+          </div>
+          <div>
+            <b>Human closes it</b
+            ><span>A suggestion never resolves a request or ticket.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="flows">
+      <div class="wrap">
+        <p class="eyebrow">03 · Data flow</p>
+        <h2>Who does what, and where the data goes.</h2>
+        <p class="section-lede">
+          Solid arrows are actions, dashed arrows are responses. Records live in
+          the visitor’s browser; only the text being classified reaches the
+          server, and only live mode forwards it to Jev.
+        </p>
+        <div class="legend">
+          <span><i></i>action / request</span>
+          <span><i class="dash"></i>response</span>
+          <span
+            ><span class="chip chip-jev">Jev</span> model call (live mode
+            only)</span
           >
-        </article>
-      </section>
-      <p style="margin-top: 30px">
-        Start with synthetic examples. Each browser gets its own workspace;
-        changes stay on your device.
-        <a href="/case-study.html" style="color: #355c45"
-          >See the demonstration steps and engineering decisions ↗</a
-        >
-        ·
-        <a
-          href="https://github.com/hemantsarthak/folio-relay-workflow-lab"
-          style="color: #355c45"
-          >Source code ↗</a
-        >
-      </p>
-    </main>
+        </div>
+        <div class="flow">
+          <div class="flow-head">
+            <h3>Folio · preparer ↔ client</h3>
+            <a href="/apps/tax/#case">Try this flow →</a>
+          </div>
+          <svg
+            class="flow-svg"
+            viewBox="0 0 1040 682"
+            role="img"
+            aria-labelledby="t-37"
+          >
+            <title id="t-37">Folio data flow: one document request</title>
+            <defs>
+              <marker
+                id="ah"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                orient="auto-start-reverse"
+              >
+                <path d="M0,0 L10,5 L0,10 z" class="flow-arrowhead" />
+              </marker>
+            </defs>
+            <line class="flow-life" x1="90" y1="68" x2="90" y2="674" />
+            <rect
+              class="flow-lane flow-person"
+              x="15"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-person-text"
+              x="90"
+              y="50"
+              text-anchor="middle"
+            >
+              Preparer
+            </text>
+            <line class="flow-life" x1="305" y1="68" x2="305" y2="674" />
+            <rect
+              class="flow-lane flow-person"
+              x="230"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-person-text"
+              x="305"
+              y="50"
+              text-anchor="middle"
+            >
+              Client
+            </text>
+            <line class="flow-life" x1="520" y1="68" x2="520" y2="674" />
+            <rect
+              class="flow-lane flow-app"
+              x="445"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-app-text"
+              x="520"
+              y="50"
+              text-anchor="middle"
+            >
+              Folio (browser)
+            </text>
+            <line class="flow-life" x1="735" y1="68" x2="735" y2="674" />
+            <rect
+              class="flow-lane flow-server"
+              x="660"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-server-text"
+              x="735"
+              y="50"
+              text-anchor="middle"
+            >
+              Server adapter
+            </text>
+            <line class="flow-life" x1="950" y1="68" x2="950" y2="674" />
+            <rect
+              class="flow-lane flow-jev"
+              x="875"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-jev-text"
+              x="950"
+              y="50"
+              text-anchor="middle"
+            >
+              Jev
+            </text>
+            <line
+              class="flow-msg"
+              x1="94"
+              y1="108"
+              x2="514"
+              y2="108"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="305" y="100" text-anchor="middle">
+              1. Pick client, tick expected forms
+            </text>
+            <text class="flow-sub" x="305" y="125" text-anchor="middle">
+              checklist shows “2025 W-2 · Missing”
+            </text>
+            <line
+              class="flow-msg"
+              x1="94"
+              y1="166"
+              x2="299"
+              y2="166"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="197.5" y="158" text-anchor="middle">
+              2. Issue request: “Upload your 2025 K-1”
+            </text>
+            <text class="flow-sub" x="197.5" y="183" text-anchor="middle">
+              stored in the client’s portal view
+            </text>
+            <line
+              class="flow-msg"
+              x1="309"
+              y1="224"
+              x2="514"
+              y2="224"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="412.5" y="216" text-anchor="middle">
+              3. Attach PDF or TXT
+            </text>
+            <text class="flow-sub" x="412.5" y="241" text-anchor="middle">
+              PDF.js extracts text in the browser
+            </text>
+            <line
+              class="flow-msg"
+              x1="524"
+              y1="282"
+              x2="729"
+              y2="282"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="627.5" y="274" text-anchor="middle">
+              4. POST /api/classify
+            </text>
+            <text class="flow-sub" x="627.5" y="299" text-anchor="middle">
+              { kind: "tax", text, mode }
+            </text>
+            <line
+              class="flow-msg"
+              x1="739"
+              y1="340"
+              x2="944"
+              y2="340"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="842.5" y="332" text-anchor="middle">
+              5. systemone: category + attention
+            </text>
+            <text class="flow-sub" x="842.5" y="357" text-anchor="middle">
+              choice over W-2 / 1099 / K-1 / Receipt / Other
+            </text>
+            <line
+              class="flow-msg flow-res"
+              x1="946"
+              y1="398"
+              x2="741"
+              y2="398"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="842.5" y="390" text-anchor="middle">
+              6. Answers with probabilities
+            </text>
+            <line
+              class="flow-msg flow-res"
+              x1="731"
+              y1="456"
+              x2="526"
+              y2="456"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="627.5" y="448" text-anchor="middle">
+              7. Validated Decision
+            </text>
+            <text class="flow-sub" x="627.5" y="473" text-anchor="middle">
+              rejects bad labels or scores · no silent fallback
+            </text>
+            <path
+              class="flow-msg"
+              d="M520 504 h34 v22 h-30"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="564" y="512">
+              8. Code checks the tax year
+            </text>
+            <text class="flow-sub" x="564" y="529">
+              wrong year keeps the request open
+            </text>
+            <line
+              class="flow-msg flow-res"
+              x1="516"
+              y1="572"
+              x2="96"
+              y2="572"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="305" y="564" text-anchor="middle">
+              9. Evidence + suggestion to review
+            </text>
+            <line
+              class="flow-msg"
+              x1="94"
+              y1="630"
+              x2="514"
+              y2="630"
+              marker-end="url(#ah)"
+            />
+            <text class="flow-label" x="305" y="622" text-anchor="middle">
+              10. Verify &amp; close with a note
+            </text>
+            <text class="flow-sub" x="305" y="647" text-anchor="middle">
+              checklist → Verified
+            </text>
+          </svg>
+          <ol class="flow-list">
+            <li>
+              <span class="chip chip-person">Preparer</span> →
+              <span class="chip chip-app">Folio (browser)</span
+              ><strong>Pick client, tick expected forms</strong
+              ><small>checklist shows “2025 W-2 · Missing”</small>
+            </li>
+            <li>
+              <span class="chip chip-person">Preparer</span> →
+              <span class="chip chip-person">Client</span
+              ><strong>Issue request: “Upload your 2025 K-1”</strong
+              ><small>stored in the client’s portal view</small>
+            </li>
+            <li>
+              <span class="chip chip-person">Client</span> →
+              <span class="chip chip-app">Folio (browser)</span
+              ><strong>Attach PDF or TXT</strong
+              ><small>PDF.js extracts text in the browser</small>
+            </li>
+            <li>
+              <span class="chip chip-app">Folio (browser)</span> →
+              <span class="chip chip-server">Server adapter</span
+              ><strong>POST /api/classify</strong
+              ><small>{ kind: "tax", text, mode }</small>
+            </li>
+            <li>
+              <span class="chip chip-server">Server adapter</span> →
+              <span class="chip chip-jev">Jev</span
+              ><strong>systemone: category + attention</strong
+              ><small>choice over W-2 / 1099 / K-1 / Receipt / Other</small>
+            </li>
+            <li>
+              <span class="chip chip-jev">Jev</span> →
+              <span class="chip chip-server">Server adapter</span
+              ><strong>Answers with probabilities</strong>
+            </li>
+            <li>
+              <span class="chip chip-server">Server adapter</span> →
+              <span class="chip chip-app">Folio (browser)</span
+              ><strong>Validated Decision</strong
+              ><small>rejects bad labels or scores · no silent fallback</small>
+            </li>
+            <li>
+              <span class="chip chip-app">Folio (browser)</span
+              ><strong>Code checks the tax year</strong
+              ><small>wrong year keeps the request open</small>
+            </li>
+            <li>
+              <span class="chip chip-app">Folio (browser)</span> →
+              <span class="chip chip-person">Preparer</span
+              ><strong>Evidence + suggestion to review</strong>
+            </li>
+            <li>
+              <span class="chip chip-person">Preparer</span> →
+              <span class="chip chip-app">Folio (browser)</span
+              ><strong>Verify &amp; close with a note</strong
+              ><small>checklist → Verified</small>
+            </li>
+          </ol>
+        </div>
+        <div class="flow">
+          <div class="flow-head">
+            <h3>Relay · employee ↔ IT</h3>
+            <a href="/apps/it/#portal">Try this flow →</a>
+          </div>
+          <svg
+            class="flow-svg"
+            viewBox="0 0 1040 624"
+            role="img"
+            aria-labelledby="t-36"
+          >
+            <title id="t-36">Relay data flow: one support request</title>
+            <defs>
+              <marker
+                id="ah2"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                orient="auto-start-reverse"
+              >
+                <path d="M0,0 L10,5 L0,10 z" class="flow-arrowhead" />
+              </marker>
+            </defs>
+            <line class="flow-life" x1="90" y1="68" x2="90" y2="616" />
+            <rect
+              class="flow-lane flow-person"
+              x="15"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-person-text"
+              x="90"
+              y="50"
+              text-anchor="middle"
+            >
+              Employee
+            </text>
+            <line class="flow-life" x1="305" y1="68" x2="305" y2="616" />
+            <rect
+              class="flow-lane flow-person"
+              x="230"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-person-text"
+              x="305"
+              y="50"
+              text-anchor="middle"
+            >
+              IT admin
+            </text>
+            <line class="flow-life" x1="520" y1="68" x2="520" y2="616" />
+            <rect
+              class="flow-lane flow-app"
+              x="445"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-app-text"
+              x="520"
+              y="50"
+              text-anchor="middle"
+            >
+              Relay (browser)
+            </text>
+            <line class="flow-life" x1="735" y1="68" x2="735" y2="616" />
+            <rect
+              class="flow-lane flow-server"
+              x="660"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-server-text"
+              x="735"
+              y="50"
+              text-anchor="middle"
+            >
+              Server adapter
+            </text>
+            <line class="flow-life" x1="950" y1="68" x2="950" y2="616" />
+            <rect
+              class="flow-lane flow-jev"
+              x="875"
+              y="22"
+              width="150"
+              height="46"
+              rx="8"
+            />
+            <text
+              class="flow-lane-text flow-jev-text"
+              x="950"
+              y="50"
+              text-anchor="middle"
+            >
+              Jev
+            </text>
+            <line
+              class="flow-msg"
+              x1="94"
+              y1="108"
+              x2="514"
+              y2="108"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="305" y="100" text-anchor="middle">
+              1. Help portal: type, details, blocked?
+            </text>
+            <text class="flow-sub" x="305" y="125" text-anchor="middle">
+              creates RLY-#### · Open · Untriaged
+            </text>
+            <line
+              class="flow-msg"
+              x1="524"
+              y1="166"
+              x2="729"
+              y2="166"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="627.5" y="158" text-anchor="middle">
+              2. POST /api/classify
+            </text>
+            <text class="flow-sub" x="627.5" y="183" text-anchor="middle">
+              { kind: "it", text, mode }
+            </text>
+            <line
+              class="flow-msg"
+              x1="739"
+              y1="224"
+              x2="944"
+              y2="224"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="842.5" y="216" text-anchor="middle">
+              3. systemone: category + attention
+            </text>
+            <text class="flow-sub" x="842.5" y="241" text-anchor="middle">
+              6 IT categories · security / many people / work stopped
+            </text>
+            <line
+              class="flow-msg flow-res"
+              x1="946"
+              y1="282"
+              x2="741"
+              y2="282"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="842.5" y="274" text-anchor="middle">
+              4. Answers with probabilities
+            </text>
+            <line
+              class="flow-msg flow-res"
+              x1="731"
+              y1="340"
+              x2="526"
+              y2="340"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="627.5" y="332" text-anchor="middle">
+              5. Validated Decision
+            </text>
+            <text class="flow-sub" x="627.5" y="357" text-anchor="middle">
+              category picks the runbook
+            </text>
+            <line
+              class="flow-msg flow-res"
+              x1="516"
+              y1="398"
+              x2="311"
+              y2="398"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="412.5" y="390" text-anchor="middle">
+              6. Ticket in queue with suggestion
+            </text>
+            <text class="flow-sub" x="412.5" y="415" text-anchor="middle">
+              owner can override the category
+            </text>
+            <line
+              class="flow-msg"
+              x1="309"
+              y1="456"
+              x2="514"
+              y2="456"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="412.5" y="448" text-anchor="middle">
+              7. Owner, next step, diagnostics
+            </text>
+            <text class="flow-sub" x="412.5" y="473" text-anchor="middle">
+              read-only PowerShell collector JSON
+            </text>
+            <line
+              class="flow-msg flow-res"
+              x1="516"
+              y1="514"
+              x2="96"
+              y2="514"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="305" y="506" text-anchor="middle">
+              8. Portal progress + IT update
+            </text>
+            <text class="flow-sub" x="305" y="531" text-anchor="middle">
+              Submitted → Routed → In progress → Resolved
+            </text>
+            <line
+              class="flow-msg"
+              x1="309"
+              y1="572"
+              x2="514"
+              y2="572"
+              marker-end="url(#ah2)"
+            />
+            <text class="flow-label" x="412.5" y="564" text-anchor="middle">
+              9. Resolve · patterns in Ops review
+            </text>
+          </svg>
+          <ol class="flow-list">
+            <li>
+              <span class="chip chip-person">Employee</span> →
+              <span class="chip chip-app">Relay (browser)</span
+              ><strong>Help portal: type, details, blocked?</strong
+              ><small>creates RLY-#### · Open · Untriaged</small>
+            </li>
+            <li>
+              <span class="chip chip-app">Relay (browser)</span> →
+              <span class="chip chip-server">Server adapter</span
+              ><strong>POST /api/classify</strong
+              ><small>{ kind: "it", text, mode }</small>
+            </li>
+            <li>
+              <span class="chip chip-server">Server adapter</span> →
+              <span class="chip chip-jev">Jev</span
+              ><strong>systemone: category + attention</strong
+              ><small
+                >6 IT categories · security / many people / work stopped</small
+              >
+            </li>
+            <li>
+              <span class="chip chip-jev">Jev</span> →
+              <span class="chip chip-server">Server adapter</span
+              ><strong>Answers with probabilities</strong>
+            </li>
+            <li>
+              <span class="chip chip-server">Server adapter</span> →
+              <span class="chip chip-app">Relay (browser)</span
+              ><strong>Validated Decision</strong
+              ><small>category picks the runbook</small>
+            </li>
+            <li>
+              <span class="chip chip-app">Relay (browser)</span> →
+              <span class="chip chip-person">IT admin</span
+              ><strong>Ticket in queue with suggestion</strong
+              ><small>owner can override the category</small>
+            </li>
+            <li>
+              <span class="chip chip-person">IT admin</span> →
+              <span class="chip chip-app">Relay (browser)</span
+              ><strong>Owner, next step, diagnostics</strong
+              ><small>read-only PowerShell collector JSON</small>
+            </li>
+            <li>
+              <span class="chip chip-app">Relay (browser)</span> →
+              <span class="chip chip-person">Employee</span
+              ><strong>Portal progress + IT update</strong
+              ><small>Submitted → Routed → In progress → Resolved</small>
+            </li>
+            <li>
+              <span class="chip chip-person">IT admin</span> →
+              <span class="chip chip-app">Relay (browser)</span
+              ><strong>Resolve · patterns in Ops review</strong>
+            </li>
+          </ol>
+          <div class="lifecycle" aria-label="Relay employee lifecycle">
+            <div><b>1 · Onboard</b>IT adds the person, apps and laptop.</div>
+            <div>
+              <b>2 · Depart</b>An exit date lists everything still switched on.
+            </div>
+            <div>
+              <b>3 · Audit</b>Roster × app accounts × devices → findings.
+            </div>
+            <div>
+              <b>4 · Close gaps</b>Operator notes, then re-audit until clean.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="wrap">
+        <p class="eyebrow">04 · Questions</p>
+        <h2>Worth knowing before you click.</h2>
+        <div class="faq">
+          <div>
+            <details>
+              <summary>What is “Reviewer live access”?</summary>
+              <p>
+                The public site routes with local rules so it costs nothing to
+                run. If Hemant sent you a reviewer code, open either app, expand
+                “Have a reviewer code? Unlock live Jev”, enter it, then choose
+                <b>Jev live</b> as the routing engine in the sidebar. The code
+                is a quota gate for the shared API key, not a login.
+              </p>
+            </details>
+            <details>
+              <summary>Is any of this real data?</summary>
+              <p>
+                No. Every client, employee and document is synthetic. Records
+                save in your browser only, and each app has a reset.
+              </p>
+            </details>
+            <details>
+              <summary>
+                Does it send emails, Slack messages or change accounts?
+              </summary>
+              <p>
+                No. Requests, account changes and device returns are simulated
+                records with operator notes. Real use would need authentication,
+                durable storage and authorised integrations.
+              </p>
+            </details>
+          </div>
+          <div>
+            <details>
+              <summary>What’s the stack?</summary>
+              <p>
+                React 19, TypeScript, TanStack Query, Vite, PDF.js and
+                lucide-react on the front end; Express locally and a Netlify
+                function in production for the Jev adapter; a PowerShell
+                collector for Windows diagnostics; Node’s test runner for 32
+                tests.
+              </p>
+            </details>
+            <details>
+              <summary>Was it built with AI help?</summary>
+              <p>
+                Yes, with AI assistance. The design choices — typed transitions,
+                validated model answers, visible failure and human sign-off —
+                are what I’d want to discuss.
+              </p>
+            </details>
+            <details>
+              <summary>Is this affiliated with Rivet?</summary>
+              <p>
+                No. These are independent concepts inspired by Rivet’s open
+                roles. The visual style nods to rivet.tax; no Rivet code, data
+                or branding assets are used.
+              </p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer>
-      <p>
-        Built with AI assistance by Hemant Sarthak. Synthetic workflow demos;
-        document routing uses local rules by default. Hosted live Jev access
-        requires a reviewer code and server configuration.
-      </p>
-      <p>
-        Independent concepts inspired by Rivet’s roles.<br />Not affiliated with
-        or endorsed by Rivet.
-      </p>
+      <div class="wrap">
+        <span>Hemant Sarthak · Folio &amp; Relay workflow lab</span>
+        <span
+          >Independent portfolio concepts · not affiliated with or endorsed by
+          Rivet</span
+        >
+      </div>
     </footer>
   </body>
 </html>

@@ -1,0 +1,577 @@
+/*
+ * Shared visual layer for Folio and Relay, loaded after each app's own CSS.
+ * Palette follows a modern tax-firm look: charcoal chrome, warm paper
+ * surfaces, serif display type and one deep-teal action colour.
+ */
+:root {
+  --rv-ink: #141310;
+  --rv-text: #2b2a26;
+  --rv-text-2: #615d51;
+  --rv-muted: #8b877c;
+  --rv-bg: #faf9f7;
+  --rv-card: #ffffff;
+  --rv-subtle: #f5f3ed;
+  --rv-line: #ebe9e3;
+  --rv-line-2: #dedad0;
+  --rv-charcoal: #1b1c1e;
+  --rv-charcoal-2: #2a2b2e;
+  --rv-chrome-text: #c8cacf;
+  --rv-chrome-muted: #8e9096;
+  --rv-teal: #0e4c55;
+  --rv-teal-hover: #105761;
+  --rv-teal-tint: #e7f0f0;
+  --rv-amber: #8f6212;
+  --rv-amber-tint: #fbf1dc;
+  --rv-red: #a3392a;
+  --rv-red-tint: #fbeae6;
+  --rv-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --rv-sans: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: var(--rv-sans);
+  color: var(--rv-text);
+  background: var(--rv-bg);
+}
+body {
+  background: var(--rv-bg);
+}
+h1,
+h2,
+.page-header h1 {
+  font-family: var(--rv-serif);
+  font-weight: 400;
+  color: var(--rv-ink);
+  letter-spacing: -0.02em;
+}
+.page-header h1 {
+  font-size: 34px;
+  line-height: 1.15;
+}
+.eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--rv-text-2);
+}
+.subtitle,
+.page-header p {
+  font-size: 14px;
+  color: var(--rv-text-2);
+  max-width: 680px;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--rv-teal);
+  outline-offset: 3px;
+}
+
+/* ---------- Chrome (sidebar) ---------- */
+.sidebar {
+  background: var(--rv-charcoal);
+  color: var(--rv-chrome-text);
+  border-right: 1px solid #000;
+}
+.brand,
+.wordmark {
+  color: #f0f1f5;
+  font-family: var(--rv-serif);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+.brand-icon {
+  background: #f0f1f5;
+  color: var(--rv-charcoal);
+  transform: none;
+}
+.brand-icon svg {
+  transform: none;
+}
+.brand-dot {
+  color: #7fb3ba;
+}
+.workspace-label,
+.nav-caption {
+  color: var(--rv-chrome-muted);
+}
+.nav-item,
+.nav-link {
+  color: var(--rv-chrome-text);
+  border-radius: 6px;
+}
+@media (min-width: 1001px) {
+  .nav-item,
+  .nav-link {
+    font-size: 13px;
+    padding: 10px 12px;
+    margin-bottom: 2px;
+  }
+}
+@media (min-width: 781px) and (max-width: 1000px) {
+  .nav-item,
+  .nav-link {
+    font-size: 11.5px;
+  }
+  .nav-hint {
+    display: none !important;
+  }
+}
+.nav-item:hover,
+.nav-link:hover {
+  background: var(--rv-charcoal-2);
+  color: #fff;
+}
+.nav-item.active,
+.nav-link.selected {
+  background: #f0f1f5;
+  color: var(--rv-charcoal);
+  font-weight: 600;
+}
+.nav-link.selected svg {
+  color: var(--rv-teal);
+}
+.nav-count {
+  background: #3a3b3f;
+  color: #f0f1f5;
+}
+.nav-item.active .nav-count,
+.nav-link.selected .nav-count {
+  background: var(--rv-charcoal);
+  color: #f0f1f5;
+}
+.nav-section {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rv-chrome-muted);
+  margin: 22px 12px 8px;
+}
+.nav-section:first-child {
+  margin-top: 0;
+}
+.nav-hint {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--rv-chrome-muted);
+  margin-top: 2px;
+}
+.nav-item.active .nav-hint,
+.nav-link.selected .nav-hint {
+  color: var(--rv-text-2);
+}
+.nav-item > span:not(.nav-count),
+.nav-link > span:not(.nav-count):not(.nav-mini) {
+  min-width: 0;
+}
+.private-note,
+.profile,
+.sidebar-note,
+.sidebar-bottom > a {
+  border-color: #333438 !important;
+}
+.private-note strong,
+.profile strong,
+.portfolio-link,
+.sidebar-bottom > a {
+  color: #e6e7ea;
+}
+.private-note p,
+.profile small,
+.private-note svg,
+.sidebar-note p {
+  color: var(--rv-chrome-muted);
+}
+.avatar,
+.workspace-avatar {
+  background: var(--rv-charcoal-2);
+  color: #e6e7ea;
+  border-color: #3a3b3f;
+}
+.connection-dot.ready,
+.online-dot {
+  background: #5fb58a;
+}
+.small-status-dot {
+  background: #7fb3ba;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  background: var(--rv-bg);
+  border-bottom: 1px solid var(--rv-line);
+}
+.project-tag,
+.prototype-pill {
+  border-color: var(--rv-line-2);
+  background: var(--rv-card);
+  color: var(--rv-text-2);
+}
+
+/* ---------- Buttons ---------- */
+.button.primary,
+.primary-button,
+.client-primary,
+.case-primary,
+.people-primary,
+.audit-primary,
+.people-directory-head button {
+  background: var(--rv-teal);
+  border-color: var(--rv-teal);
+  color: #f5f3ed;
+}
+.button.primary:hover,
+.primary-button:hover,
+.client-primary:hover,
+.case-primary:hover,
+.people-primary:hover,
+.audit-primary:hover,
+.people-directory-head button:hover {
+  background: var(--rv-teal-hover);
+  color: #fff;
+}
+.outline-button,
+.button {
+  background: var(--rv-card);
+  border-color: var(--rv-line-2);
+  color: var(--rv-text);
+}
+
+/* ---------- Status semantics ---------- */
+.audit-finding {
+  border-color: #efc9bf;
+  background: var(--rv-red-tint);
+}
+.inline-error,
+.client-alert.error,
+.case-alert.error,
+.people-alert.error {
+  color: var(--rv-red);
+  background: var(--rv-red-tint);
+  border-color: #efc9bf;
+}
+
+/* ---------- Journey guide (shared) ---------- */
+.journey {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--steps, 5), minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--rv-line);
+  border-radius: 10px;
+  background: var(--rv-card);
+  overflow: hidden;
+  margin: 0 0 22px;
+}
+.journey-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 16px 14px 16px;
+  text-align: left;
+  border: 0;
+  border-right: 1px solid var(--rv-line);
+  background: transparent;
+  color: var(--rv-text-2);
+  font: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
+.journey-step:last-child {
+  border-right: 0;
+}
+.journey-step:hover {
+  background: var(--rv-subtle);
+}
+.journey-step b {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--rv-line-2);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--rv-text-2);
+  background: var(--rv-card);
+}
+.journey-step strong {
+  font-size: 13px;
+  color: var(--rv-ink);
+  font-weight: 600;
+}
+.journey-step small {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--rv-muted);
+}
+.journey-step em {
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rv-muted);
+}
+.journey-step.done b {
+  background: var(--rv-teal-tint);
+  border-color: #b9d3d6;
+  color: var(--rv-teal);
+}
+.journey-step.current {
+  background: var(--rv-teal-tint);
+  box-shadow: inset 0 -3px 0 var(--rv-teal);
+}
+.journey-step.current b {
+  background: var(--rv-teal);
+  border-color: var(--rv-teal);
+  color: #fff;
+}
+.journey-step.current strong {
+  color: var(--rv-teal);
+}
+.journey-tip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: -10px 0 22px;
+  font-size: 13px;
+  color: var(--rv-text-2);
+}
+.journey-tip strong {
+  color: var(--rv-ink);
+}
+.journey-tip button {
+  border: 1px solid var(--rv-teal);
+  background: var(--rv-teal);
+  color: #f5f3ed;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.journey-tip button.ghost {
+  background: transparent;
+  color: var(--rv-teal);
+}
+
+/* Start page */
+.start-here {
+  display: grid;
+  gap: 30px;
+  padding-bottom: 20px;
+}
+.start-try {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px 22px;
+  border-radius: 12px;
+  background: var(--rv-charcoal);
+  color: var(--rv-chrome-text);
+}
+.start-try .eyebrow {
+  color: var(--rv-chrome-muted);
+}
+.start-try p {
+  margin: 6px 0 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  max-width: 640px;
+}
+.start-try strong {
+  color: #fff;
+}
+.start-try .primary-button,
+.start-try .button.primary {
+  background: #f0f1f5;
+  color: var(--rv-charcoal);
+  border-color: #f0f1f5;
+  padding: 11px 16px;
+  font-size: 13px;
+}
+.start-try .primary-button:hover,
+.start-try .button.primary:hover {
+  background: #fff;
+  color: var(--rv-charcoal);
+}
+.start-flow-head h2 {
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+.start-flow-head p {
+  margin: 0 0 14px;
+  color: var(--rv-text-2);
+  font-size: 14px;
+}
+.start-flow .journey {
+  list-style: none;
+  padding: 0;
+}
+.start-flow .journey-step strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.start-boundary {
+  font-size: 12.5px;
+  color: var(--rv-muted);
+  margin: 0;
+}
+
+/* Sidebar routing switch */
+.engine-switch {
+  display: grid;
+  gap: 8px;
+  padding: 14px 0 4px;
+  border-top: 1px solid #333438;
+}
+.engine-switch > span {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rv-chrome-muted);
+}
+.engine-switch > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--rv-charcoal-2);
+  border-radius: 7px;
+  padding: 3px;
+}
+.engine-switch button {
+  border: 0;
+  background: transparent;
+  color: var(--rv-chrome-text);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.engine-switch button.selected {
+  background: #f0f1f5;
+  color: var(--rv-charcoal);
+}
+.engine-switch button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.engine-switch small {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--rv-chrome-muted);
+}
+
+div.journey-step {
+  cursor: default;
+}
+div.journey-step:hover {
+  background: transparent;
+}
+div.journey-step.current:hover {
+  background: var(--rv-teal-tint);
+}
+
+/* ---------- Role switch (shared) ---------- */
+.viewing-as {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--rv-subtle);
+  border: 1px solid var(--rv-line);
+}
+.viewing-as > span {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rv-muted);
+  padding: 0 8px 0 10px;
+}
+.viewing-as button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--rv-text-2);
+  cursor: pointer;
+}
+.viewing-as button.selected {
+  background: var(--rv-charcoal);
+  color: #f0f1f5;
+}
+
+@media (max-width: 900px) {
+  .journey {
+    grid-template-columns: 1fr;
+  }
+  .journey-step {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    border-right: 0;
+    border-bottom: 1px solid var(--rv-line);
+    padding: 11px 14px;
+  }
+  .journey-step:last-child {
+    border-bottom: 0;
+  }
+  .journey-step small {
+    flex-basis: 100%;
+    padding-left: 30px;
+  }
+  .journey-step em {
+    margin-left: auto;
+  }
+}
+
+/* Phone: the sidebar becomes a top bar with a scrollable nav row. */
+@media (max-width: 780px) {
+  .relay-app .sidebar {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .relay-app .sidebar nav {
+    order: 3;
+    flex-basis: 100%;
+    margin-left: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .relay-app .nav-section,
+  .relay-app .nav-hint {
+    display: none;
+  }
+  .relay-app .nav-link {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .page-header h1 {
+    font-size: 28px;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell .nav-section {
+    display: none;
+  }
+}
+@media (min-width: 781px) {
+  .relay-app .sidebar nav {
+    margin-top: 28px;
+  }
+}
+@media (min-width: 701px) {
+  .app-shell .sidebar nav {
+    margin-top: 28px;
+  }
+}

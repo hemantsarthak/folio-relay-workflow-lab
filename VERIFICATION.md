@@ -45,6 +45,13 @@ Checked locally on Windows with Node.js 22.18.0 on September 26, 2026.
 - At a narrow mobile viewport, Folio's document workspace and Relay's queue/detail views remained usable without horizontal page overflow. The viewport override was cleared after inspection.
 - Configured an OpenCode inference-only key in the ignored local `.env` file, then made live Jev calls with synthetic data. `POST /api/classify` returned `source=jev`, `model=jev-1.13-free`, and `W-2` / `Identity & access` for the synthetic tax / IT cases. Folio's browser UI showed a live W-2 result; Relay's browser UI showed a live Remote desktop result and an OpenCode Zen disclosure.
 
+## Redesign and Help portal (2026-09-30)
+
+- `npm test` (32 pass), `tsc --noEmit`, `npm run format:check` and `npm run build` pass. The production bundle was checked to load the shared theme after each app's base CSS.
+- Relay Help portal: as Maya, submitted a Remote desktop request with "colleagues affected"; it created RLY-1048 at High priority, local rules routed it to Remote desktop, the portal showed it as Routed, and the Support queue showed it labelled "From Help portal" with both audit entries.
+- Folio: for Alex's 2025 K-1, issued the request, used the guide's "Answer as Alex" to switch to the client portal, submitted the synthetic sample, reviewed as preparer and closed it; the checklist showed the K-1 as Verified and the step guide advanced at each stage.
+- Landing page, Folio and Relay had no horizontal page overflow at 375 px. Live Jev was not re-called for this change; the adapter code was not modified.
+
 ## Limits of verification
 
 - Direct TypeSafe access was not tested because no TypeSafe key was supplied. Live OpenCode Zen responses verify connectivity and the application path on these synthetic cases, not broader classification accuracy or future model availability.

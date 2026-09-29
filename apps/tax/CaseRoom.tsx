@@ -89,16 +89,18 @@ async function readAttachment(file: File): Promise<string> {
 export default function CaseRoom({
   caseData,
   onChange,
-  liveAvailable,
   provider,
+  mode,
+  role,
+  onRoleChange: setRole,
 }: {
   caseData: QuestionCase;
   onChange: (next: QuestionCase) => void;
-  liveAvailable: boolean;
   provider: string | null;
+  mode: Mode;
+  role: "preparer" | "client";
+  onRoleChange: (role: "preparer" | "client") => void;
 }) {
-  const [role, setRole] = useState<"preparer" | "client">("preparer");
-  const [mode, setMode] = useState<Mode>("demo");
   const [draft, setDraft] = useState(() => requestTemplate(caseData));
   const [reply, setReply] = useState("");
   const [reviewNote, setReviewNote] = useState("");
@@ -118,7 +120,9 @@ export default function CaseRoom({
   const sendRequest = () => {
     try {
       update(issueRequest(caseData, draft));
-      setNotice("Request placed in the demo client view. No message was sent.");
+      setNotice(
+        "Request issued. Switch to “Client” at the top to answer it as the client. No real message was sent.",
+      );
     } catch (e) {
       setError((e as Error).message);
     }
@@ -148,7 +152,9 @@ export default function CaseRoom({
       setReply("");
       if (fileInput.current) fileInput.current.value = "";
       setRole("preparer");
-      setNotice("Client response received. A preparer must review it.");
+      setNotice(
+        `Response received and routed by ${decision.source === "jev" ? `Jev (${decision.model})` : "local rules"}. Now review it below.`,
+      );
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -188,20 +194,9 @@ export default function CaseRoom({
       </div>
 
       <div className="case-toolbar">
-        <div className="case-role-switch" aria-label="Demo role">
-          <button
-            className={role === "preparer" ? "selected" : ""}
-            onClick={() => setRole("preparer")}
-          >
-            Preparer view
-          </button>
-          <button
-            className={role === "client" ? "selected" : ""}
-            onClick={() => setRole("client")}
-          >
-            Client view
-          </button>
-        </div>
+        <span className="case-role-label">
+          {role === "preparer" ? "Preparer’s view" : "What the client sees"}
+        </span>
         <div className="case-actions">
           <span>Saved with client workspace</span>
           <button
@@ -416,8 +411,8 @@ export default function CaseRoom({
               </div>
             ) : (
               <p className="case-empty">
-                The preparer has not issued a request yet. Switch to Preparer
-                view to start.
+                The preparer hasn’t issued this request yet. Switch to the
+                preparer view to send it.
               </p>
             )}
             {caseData.status === "awaiting-client" && (
@@ -483,31 +478,6 @@ export default function CaseRoom({
                   >
                     Use synthetic sample
                   </button>
-                </div>
-                <div className="case-engine">
-                  <span>Routing engine</span>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={mode === "demo"}
-                      onChange={() => setMode("demo")}
-                    />{" "}
-                    Local rules
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={mode === "live"}
-                      onChange={() => setMode("live")}
-                      disabled={!liveAvailable}
-                    />{" "}
-                    Jev live
-                  </label>
-                  {!liveAvailable && (
-                    <small>
-                      Configure a server-side key to enable live Jev.
-                    </small>
-                  )}
                 </div>
               </>
             )}

@@ -13,7 +13,7 @@ import {
   Check,
   CheckCheck,
   ChevronRight,
-  CircleHelp,
+  Compass,
   Clock3,
   FileText,
   Files,
@@ -47,6 +47,7 @@ import ClientWorkspace from "./ClientWorkspace";
 import LiveAccess from "../../src/shared/LiveAccess";
 import "../../src/shared/demo.css";
 import "./style.css";
+import "./theme.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 type Doc = {
@@ -72,30 +73,35 @@ type Filter =
 type Page = "case" | "documents" | "activity" | "about";
 const pageCopy: Record<
   Page,
-  { breadcrumb: string; title: string; subtitle: string }
+  { breadcrumb: string; eyebrow: string; title: string; subtitle: string }
 > = {
   case: {
-    breadcrumb: "Clients",
-    title: "Every client, a clear next step.",
+    breadcrumb: "Clients & requests",
+    eyebrow: "PREPARER ↔ CLIENT",
+    title: "Clients & requests",
     subtitle:
-      "Manage client records, document requests, and source-backed reviews in one workspace.",
+      "Ask a client for a document, answer as the client, then review what came back. The guide below always shows the next step.",
   },
   documents: {
-    breadcrumb: "Document review",
-    title: "Every document, in its place.",
+    breadcrumb: "Batch triage",
+    eyebrow: "SANDBOX",
+    title: "Batch document triage",
     subtitle:
-      "Turn a mixed packet into an organized review queue. You make the final call.",
+      "A sandbox: drop a mixed packet of PDFs and let Jev or local rules sort it into W-2, 1099, K-1 and the rest. You confirm each one.",
   },
   activity: {
     breadcrumb: "Activity log",
+    eyebrow: "AUDIT TRAIL",
     title: "A clear trail of decisions.",
     subtitle:
       "Follow the suggestions, corrections, and reviews behind your packet.",
   },
   about: {
     breadcrumb: "How it works",
-    title: "Thoughtful automation. Human review.",
-    subtitle: "A small, working exploration of document triage for a tax team.",
+    eyebrow: "START HERE",
+    title: "Collect the right documents, first time.",
+    subtitle:
+      "Folio is the loop between a tax preparer and their client: ask for a specific document, receive it, let Jev route it, and verify it before the return moves on.",
   },
 };
 const samples = [
@@ -293,6 +299,10 @@ function PdfPreview({ url, name }: { url: string; name: string }) {
     </div>
   );
 }
+function pageFromHash(): Page {
+  const hash = location.hash.slice(1);
+  return hash in pageCopy ? (hash as Page) : "about";
+}
 function App() {
   const [docs, setDocs] = useState<Doc[]>(initialDocs);
   const [selected, setSelected] = useState("sample-0");
@@ -309,7 +319,21 @@ function App() {
         "Loaded five synthetic text documents. No real taxpayer information.",
     },
   ]);
-  const [page, setPage] = useState<Page>("case");
+  const [page, setPageState] = useState<Page>(pageFromHash);
+  const setPage = (next: Page) => {
+    setPageState(next);
+    history.replaceState(
+      null,
+      "",
+      next === "about" ? location.pathname : `#${next}`,
+    );
+    window.scrollTo(0, 0);
+  };
+  useEffect(() => {
+    const onHash = () => setPageState(pageFromHash());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
   const [preview, setPreview] = useState<"source" | "pdf">("source");
   const [notice, setNotice] = useState("");
   const [dragging, setDragging] = useState(false);
@@ -664,55 +688,89 @@ function App() {
           </span>
           folio<span className="brand-dot">.</span>
         </a>
-        <div className="workspace-label">HEMANT’S WORKSPACE</div>
         <nav aria-label="Main navigation">
+          <p className="nav-section">Start</p>
+          <button
+            className={page === "about" ? "nav-item active" : "nav-item"}
+            aria-current={page === "about" ? "page" : undefined}
+            onClick={() => setPage("about")}
+          >
+            <Compass size={18} />
+            <span>How Folio works</span>
+          </button>
+          <p className="nav-section">Client work</p>
           <button
             className={page === "case" ? "nav-item active" : "nav-item"}
+            aria-current={page === "case" ? "page" : undefined}
             onClick={() => setPage("case")}
           >
             <MessageSquareText size={18} />
-            Clients
-          </button>
-          <button
-            className={page === "documents" ? "nav-item active" : "nav-item"}
-            onClick={() => setPage("documents")}
-          >
-            <LayoutGrid size={18} />
-            Document workspace<span className="nav-count">{docs.length}</span>
+            <span>
+              Clients & requests
+              <span className="nav-hint">Preparer ↔ client loop</span>
+            </span>
           </button>
           <button
             className={page === "activity" ? "nav-item active" : "nav-item"}
+            aria-current={page === "activity" ? "page" : undefined}
             onClick={() => setPage("activity")}
           >
             <History size={18} />
-            Activity log
+            <span>Activity log</span>
           </button>
+          <p className="nav-section">Sandbox</p>
           <button
-            className={page === "about" ? "nav-item active" : "nav-item"}
-            onClick={() => setPage("about")}
+            className={page === "documents" ? "nav-item active" : "nav-item"}
+            aria-current={page === "documents" ? "page" : undefined}
+            onClick={() => setPage("documents")}
           >
-            <CircleHelp size={18} />
-            How it works
+            <LayoutGrid size={18} />
+            <span>
+              Batch triage
+              <span className="nav-hint">Sort a mixed packet</span>
+            </span>
+            <span className="nav-count">{docs.length}</span>
           </button>
         </nav>
         <div className="sidebar-bottom">
-          <div className="private-note">
-            <ShieldCheck size={22} />
-            <strong>Your browser is the workspace.</strong>
-            <p>Client work saves locally. Document queue clears on reload.</p>
+          <div
+            className="engine-switch"
+            role="group"
+            aria-label="Routing engine"
+          >
+            <span>Routing engine</span>
+            <div>
+              <button
+                className={mode === "demo" ? "selected" : ""}
+                onClick={() => setMode("demo")}
+              >
+                Local rules
+              </button>
+              <button
+                className={mode === "live" ? "selected" : ""}
+                onClick={() => setMode("live")}
+                disabled={!config.data?.liveAvailable}
+                title={
+                  config.data?.liveAvailable
+                    ? `Jev model ${config.data.model}`
+                    : "No Jev key configured on this server"
+                }
+              >
+                Jev live
+              </button>
+            </div>
+            <small>
+              {mode === "live"
+                ? `Documents go to ${config.data?.model || "Jev"} via the server.`
+                : config.data?.liveAvailable
+                  ? "Transparent keyword rules. Switch to try Jev."
+                  : "Transparent keyword rules. Jev needs a server key."}
+            </small>
           </div>
           <a href="/" className="portfolio-link">
             <ArrowLeft size={15} />
-            Back to portfolio
+            All projects
           </a>
-          <div className="profile">
-            <div className="avatar">HS</div>
-            <div>
-              <strong>Hemant Sarthak</strong>
-              <small>Application project</small>
-            </div>
-            <span className="online-dot" />
-          </div>
         </div>
       </aside>
       <main>
@@ -721,12 +779,14 @@ function App() {
             Workspace <ChevronRight size={14} />
             <strong>{pageCopy[page].breadcrumb}</strong>
           </div>
-          <span className="project-tag">INDEPENDENT PORTFOLIO DEMO</span>
+          <span className="project-tag">
+            SYNTHETIC DEMO · NOT AFFILIATED WITH RIVET
+          </span>
         </header>
         <div className="content">
           <div className="heading-row">
             <div>
-              <p className="eyebrow">A LITTLE LESS PAPERWORK</p>
+              <p className="eyebrow">{pageCopy[page].eyebrow}</p>
               <h1>{pageCopy[page].title}</h1>
               <p className="subtitle">{pageCopy[page].subtitle}</p>
             </div>
@@ -766,8 +826,8 @@ function App() {
           {config.data?.liveRequiresToken && <LiveAccess />}
           {page === "case" ? (
             <ClientWorkspace
-              liveAvailable={Boolean(config.data?.liveAvailable)}
               provider={config.data?.provider || null}
+              mode={mode}
             />
           ) : page === "documents" ? (
             <>
@@ -1323,71 +1383,119 @@ function App() {
               </div>
             </section>
           ) : (
-            <section className="about-page">
-              <div className="about-lead">
-                <span className="large-icon">
-                  <Files size={36} />
-                </span>
-                <h2>From mixed packet to review queue.</h2>
-                <p>
-                  Folio demonstrates the small interactions that make document
-                  automation usable: visible sources, explicit uncertainty,
-                  recoverable errors, and a record of human decisions.
-                </p>
+            <section className="about-page start-here">
+              <div className="start-try">
+                <div>
+                  <span className="eyebrow">TRY IT IN ONE MINUTE</span>
+                  <p>
+                    Open <strong>Clients & requests</strong>. Alex sent a 2024
+                    K-1 for a 2025 return. Request the right year, answer as
+                    Alex with the synthetic sample, then review Jev’s routing
+                    and close it.
+                  </p>
+                </div>
+                <button
+                  className="button primary"
+                  onClick={() => setPage("case")}
+                >
+                  Open Clients & requests <ArrowRight size={16} />
+                </button>
               </div>
+              <section className="start-flow">
+                <div className="start-flow-head">
+                  <h2>One document request, end to end</h2>
+                  <p>
+                    Two people, one question. The guide on the Clients page
+                    highlights where you are in this loop.
+                  </p>
+                </div>
+                <ol className="journey" style={{ ["--steps" as string]: 5 }}>
+                  {[
+                    [
+                      "Preparer",
+                      "Pick a client",
+                      "Tick the documents you expect this year. Missing ones show up immediately.",
+                    ],
+                    [
+                      "Preparer",
+                      "Request a document",
+                      "Write a specific ask, e.g. “your 2025 K-1”, and issue it.",
+                    ],
+                    [
+                      "Client",
+                      "Upload",
+                      "The client attaches a PDF or TXT in their portal. Text is read in the browser with PDF.js.",
+                    ],
+                    [
+                      "Jev + code",
+                      "Route & check",
+                      "Jev (or local rules) names the form; code compares the tax year. Neither decides alone.",
+                    ],
+                    [
+                      "Preparer",
+                      "Verify & close",
+                      "Record how you checked it. Only then does the checklist count it as verified.",
+                    ],
+                  ].map(([who, title, body], i) => (
+                    <li key={title} style={{ display: "contents" }}>
+                      <button
+                        className="journey-step"
+                        onClick={() => setPage("case")}
+                      >
+                        <em>{who}</em>
+                        <strong>
+                          <b>{i + 1}</b> {title}
+                        </strong>
+                        <small>{body}</small>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </section>
               <div className="about-grid">
                 <article>
-                  <span>01 / READ</span>
-                  <h3>Your actual source</h3>
+                  <span>WHERE JEV FITS</span>
+                  <h3>A bounded question, not a free-form answer</h3>
                   <p>
-                    PDF text is extracted in the browser with PDF.js. TXT and
-                    CSV files are read locally. This demo does not perform OCR.
-                    Scanned documents need searchable text first.
+                    The server asks Jev two structured questions: which of W-2,
+                    1099, K-1, Receipt or Other this is, and whether it needs a
+                    person’s attention. The answer is validated before anything
+                    changes; the tax-year check is plain code.
                   </p>
                 </article>
                 <article>
-                  <span>02 / ROUTE</span>
-                  <h3>A bounded decision</h3>
+                  <span>HUMAN REVIEW</span>
+                  <h3>The preparer makes the call</h3>
                   <p>
-                    The engine chooses W-2, 1099, K-1, Receipt, or Other. Local
-                    demo rules work immediately. Configure a server-side Jev key
-                    to enable live classification. Switching engines affects
-                    future requests only.
+                    A routing suggestion never closes a request. The preparer
+                    writes how they verified it, and that note lives in the
+                    request’s trail.
                   </p>
                 </article>
                 <article>
-                  <span>03 / REVIEW</span>
-                  <h3>You make the call</h3>
+                  <span>SANDBOX</span>
+                  <h3>Batch triage</h3>
                   <p>
-                    A score threshold controls routing. Unknown types always
-                    require review. Correct any category and confirm it. The
-                    export includes decisions and activity, never the document
-                    text.
+                    Have a pile of PDFs instead? Batch triage sorts a mixed
+                    packet, flags duplicates and uncertain items, and exports a
+                    manifest without document text.
                   </p>
                 </article>
                 <article>
-                  <span>04 / RESPECT</span>
-                  <h3>Small by design</h3>
+                  <span>BOUNDARIES</span>
+                  <h3>Synthetic by design</h3>
                   <p>
-                    Documents and history live in browser memory and disappear
-                    on refresh. Live Jev sends source text to{" "}
-                    {config.data?.provider || "the Jev provider"}. This
-                    independent portfolio concept is not affiliated with Rivet
-                    and does not prepare or file taxes.
+                    Everything saves in this browser. Live Jev sends document
+                    text to {config.data?.provider || "the Jev provider"}. Not
+                    affiliated with Rivet; it does not prepare or file taxes.
                   </p>
                 </article>
               </div>
-              <button
-                className="button primary"
-                onClick={() => setPage("documents")}
-              >
-                Explore the sample packet <ArrowRight size={16} />
-              </button>
             </section>
           )}
           <div className="site-footer">
             <span>FOLIO · A PORTFOLIO PROJECT BY HEMANT SARTHAK</span>
-            <span>Built for the details.</span>
+            <span>Synthetic data · not affiliated with Rivet</span>
           </div>
         </div>
       </main>

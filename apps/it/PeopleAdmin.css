@@ -1,5 +1,5 @@
 .people-admin {
-  color: #263d43;
+  color: #323437;
 }
 .people-admin button {
   cursor: pointer;
@@ -9,8 +9,8 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  background: #eaf1ee;
-  border: 1px solid #d8e5df;
+  background: #f0efeb;
+  border: 1px solid #e4e1d9;
   border-radius: 9px;
   padding: 27px 30px;
 }
@@ -18,7 +18,7 @@
 .people-directory-head span,
 .people-section-head span {
   display: block;
-  color: #748d85;
+  color: #888479;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.3px;
@@ -30,12 +30,12 @@
 }
 .people-intro p {
   max-width: 690px;
-  color: #6e8380;
+  color: #807b71;
   font-size: 12px;
   line-height: 1.6;
 }
 .people-intro > svg {
-  color: #64917f;
+  color: #827d73;
   flex-shrink: 0;
 }
 .people-stats {
@@ -46,13 +46,13 @@
 }
 .people-stats > div {
   background: #fff;
-  border: 1px solid #e1e9e6;
+  border: 1px solid #e9e7e1;
   border-radius: 8px;
   padding: 16px 20px;
 }
 .people-stats span {
   display: block;
-  color: #829693;
+  color: #938f85;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 1.1px;
@@ -64,7 +64,7 @@
   margin-top: 8px;
 }
 .people-stats small {
-  color: #91a19e;
+  color: #9f9b93;
   font-size: 10px;
 }
 .people-toolbar {
@@ -88,22 +88,22 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  border: 1px solid #d6e2df;
+  border: 1px solid #e2ded6;
   border-radius: 6px;
   background: #fff;
   padding: 9px 11px;
-  color: #30545b;
+  color: #30555b;
   font-size: 11px;
   font-weight: 700;
 }
 .people-toolbar button:hover,
 .people-profile-actions button:hover,
 .people-section-head > button:hover {
-  background: #f0f6f3;
+  background: #f5f4f1;
 }
 .people-role-switch {
   display: flex;
-  background: #eaf0ed;
+  background: #f0eeea;
   border-radius: 7px;
   padding: 3px;
   gap: 3px;
@@ -113,26 +113,26 @@
   padding: 8px 12px;
   font-size: 11px;
   font-weight: 700;
-  color: #78908c;
+  color: #8b877d;
 }
 .people-role-switch button.selected {
-  color: #2d4e52;
+  color: #3c3e43;
   background: #fff;
-  box-shadow: 0 1px 4px #21413b1e;
+  box-shadow: 0 1px 4px #213d411e;
 }
 .people-alert {
-  border: 1px solid #cde3d8;
-  background: #eaf6ee;
-  color: #386451;
+  border: 1px solid #dad9d6;
+  background: #ecf3f4;
+  color: #535049;
   border-radius: 6px;
   padding: 11px 13px;
   font-size: 11px;
   margin-bottom: 15px;
 }
 .people-alert.error {
-  background: #fff0eb;
-  border-color: #efc6bb;
-  color: #99533f;
+  background: #faf5f0;
+  border-color: #e8d5c2;
+  color: #1b6874;
 }
 .people-layout {
   display: grid;
@@ -142,7 +142,7 @@
 }
 .people-directory,
 .people-panel {
-  border: 1px solid #e0e8e5;
+  border: 1px solid #e8e6e0;
   border-radius: 8px;
   background: #fff;
 }
@@ -171,7 +171,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #d96742;
+  background: #1b6874;
   color: #fff;
   border-radius: 5px;
   padding: 8px 10px;
@@ -179,24 +179,24 @@
   font-weight: 700;
 }
 .people-directory-head button:hover {
-  background: #bd5836;
+  background: #1b6874;
 }
 .people-search {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #dce6e2;
+  border: 1px solid #e6e3dc;
   border-radius: 5px;
   margin: 0 14px 12px;
   padding: 8px 10px;
-  color: #8ca09a;
+  color: #9c9990;
 }
 .people-search input {
   width: 100%;
   min-width: 0;
   outline: 0;
   border: 0;
-  color: #2c444a;
+  color: #383a3e;
   font-size: 11px;
 }
 .people-filters {
@@ -207,22 +207,22 @@
 .people-filters button {
   border-radius: 4px;
   padding: 5px 8px;
-  color: #8a9c96;
+  color: #99968d;
   font-size: 10px;
   text-transform: capitalize;
 }
 .people-filters button.selected {
-  color: #315c59;
-  background: #eaf3ee;
+  color: #31565c;
+  background: #f1f0ec;
   font-weight: 700;
 }
 .people-list {
   max-height: 510px;
   overflow-y: auto;
-  border-top: 1px solid #e9efed;
+  border-top: 1px solid #efede9;
 }
 .people-list > p {
-  color: #8a9c96;
+  color: #99968d;
   text-align: center;
   padding: 20px;
   font-size: 11px;
@@ -234,11 +234,11 @@
   text-align: left;
   width: 100%;
   padding: 12px 13px;
-  border-bottom: 1px solid #edf1f0;
+  border-bottom: 1px solid #f2f0ec;
 }
 .people-list > button:hover,
 .people-list > button.selected {
-  background: #eef5f1;
+  background: #f4f2ef;
 }
 .people-list > button > span:nth-child(2) {
   min-width: 0;
@@ -255,18 +255,18 @@
   font-size: 11px;
 }
 .people-list small {
-  color: #8fa09c;
+  color: #9e9a91;
   font-size: 10px;
   margin-top: 3px;
 }
 .people-list em {
   font-size: 9px;
   font-style: normal;
-  color: #527e68;
+  color: #6e6a62;
   text-transform: capitalize;
 }
 .people-list em.departed {
-  color: #b46b48;
+  color: #1b6874;
 }
 .people-avatar {
   display: grid;
@@ -274,8 +274,8 @@
   flex: 0 0 31px;
   height: 31px;
   border-radius: 50%;
-  background: #dcece5;
-  color: #497766;
+  background: #e8e6e0;
+  color: #66625a;
   font-size: 10px;
   font-weight: 800;
 }
@@ -289,7 +289,7 @@
 }
 .people-section-head p {
   margin-top: 5px;
-  color: #79908b;
+  color: #8c877d;
   font-size: 11px;
 }
 .people-section-head button:disabled {
@@ -305,13 +305,13 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  border-top: 1px solid #eaf0ed;
+  border-top: 1px solid #f0eeea;
   margin-top: 19px;
   padding-top: 15px;
 }
 .people-meta small {
   display: block;
-  color: #8da09b;
+  color: #9d9990;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.8px;
@@ -322,7 +322,7 @@
   overflow-wrap: anywhere;
 }
 .people-note {
-  color: #7f918c;
+  color: #8f8b81;
   font-size: 11px;
   line-height: 1.55;
   margin: 12px 0;
@@ -330,7 +330,7 @@
 .people-operator-note {
   display: block;
   font-size: 10px;
-  color: #6d8680;
+  color: #817c72;
   font-weight: 700;
   margin: 17px 0;
 }
@@ -338,7 +338,7 @@
   display: block;
   width: 100%;
   margin-top: 6px;
-  border: 1px solid #d5e3dd;
+  border: 1px solid #e2ded6;
   border-radius: 5px;
   padding: 10px;
   font-size: 11px;
@@ -350,7 +350,7 @@
 }
 .people-access-grid > div {
   min-width: 0;
-  border: 1px solid #e4ece8;
+  border: 1px solid #ece9e4;
   border-radius: 6px;
   padding: 15px;
 }
@@ -359,7 +359,7 @@
   margin: 0 0 8px;
 }
 .people-access-grid p {
-  color: #8a9b96;
+  color: #99958c;
   font-size: 11px;
 }
 .people-access-row {
@@ -367,7 +367,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  border-top: 1px solid #edf2ef;
+  border-top: 1px solid #f2f0ed;
   padding: 10px 0;
 }
 .people-access-row strong,
@@ -378,17 +378,17 @@
   font-size: 11px;
 }
 .people-access-row small {
-  color: #91a19c;
+  color: #9f9b93;
   font-size: 9px;
   margin-top: 3px;
 }
 .people-access-row select,
 .people-add-row input {
   min-width: 0;
-  border: 1px solid #d9e5e0;
+  border: 1px solid #e4e1da;
   border-radius: 5px;
   padding: 8px;
-  color: #2c4b4f;
+  color: #3a3c41;
   background: #fff;
   font-size: 10px;
 }
@@ -418,11 +418,11 @@
 }
 .people-add-row button:hover,
 .people-primary:hover {
-  background: #1d3d43;
+  background: #1d3e43;
 }
 .people-depart-form {
-  border: 1px solid #ecd6c9;
-  background: #fff9f5;
+  border: 1px solid #ebdbca;
+  background: #fcfaf8;
   border-radius: 6px;
   padding: 15px;
   margin-top: 15px;
@@ -431,7 +431,7 @@
 .people-form label {
   display: block;
   font-size: 10px;
-  color: #6d8680;
+  color: #817c72;
   font-weight: 700;
 }
 .people-depart-form input,
@@ -439,7 +439,7 @@
 .people-form input {
   display: block;
   width: 100%;
-  border: 1px solid #d7e3df;
+  border: 1px solid #e2dfd8;
   border-radius: 5px;
   padding: 9px;
   margin: 6px 0 12px;
@@ -456,19 +456,19 @@
 }
 .people-checklist div {
   padding: 10px 12px;
-  border: 1px solid #d7e7db;
+  border: 1px solid #e4e1da;
   border-radius: 5px;
-  background: #f0f7f1;
-  color: #56765d;
+  background: #f0f6f7;
+  color: #6c6860;
   font-size: 11px;
 }
 .people-checklist div.open {
-  border-color: #f0d4c2;
-  background: #fff4ec;
-  color: #b06c46;
+  border-color: #ead9c8;
+  background: #faf6f1;
+  color: #1b6874;
 }
 .people-checklist p {
-  color: #889a95;
+  color: #98948a;
   font-size: 10px;
   line-height: 1.5;
 }
@@ -482,7 +482,7 @@
   overflow-y: auto;
 }
 .people-history li {
-  border-left: 2px solid #d2e4d9;
+  border-left: 2px solid #e1ddd5;
   padding-left: 11px;
   font-size: 10px;
 }
@@ -492,11 +492,11 @@
   display: block;
 }
 .people-history span {
-  color: #6d8680;
+  color: #817c72;
   margin: 4px 0;
 }
 .people-history small {
-  color: #97a8a2;
+  color: #a5a29a;
 }
 .people-form-grid {
   display: grid;
@@ -505,7 +505,7 @@
   margin: 16px 0;
 }
 .people-form > p {
-  color: #8c9e99;
+  color: #9b988f;
   font-size: 10px;
   margin-top: 12px;
 }
@@ -516,8 +516,8 @@
   margin-top: 15px;
 }
 .people-access-summary > div {
-  background: #f3f7f5;
-  border: 1px solid #e3ede8;
+  background: #f7f6f3;
+  border: 1px solid #ece9e4;
   border-radius: 6px;
   padding: 14px;
 }
@@ -527,14 +527,14 @@
   display: block;
 }
 .people-access-summary svg {
-  color: #73988b;
+  color: #8d887e;
   margin-bottom: 7px;
 }
 .people-access-summary strong {
   font-size: 12px;
 }
 .people-access-summary small {
-  color: #7f948d;
+  color: #918c82;
   font-size: 10px;
   line-height: 1.4;
   margin-top: 5px;
@@ -550,12 +550,12 @@
   align-items: center;
   gap: 10px;
   text-align: left;
-  border: 1px solid #e4ece8;
+  border: 1px solid #ece9e4;
   border-radius: 5px;
   padding: 10px 12px;
 }
 .people-tickets button:hover {
-  background: #f0f6f3;
+  background: #f5f4f1;
 }
 .people-tickets strong,
 .people-tickets small {
@@ -566,7 +566,7 @@
 }
 .people-tickets small,
 .people-tickets em {
-  color: #899d96;
+  color: #99968d;
   font-size: 9px;
   font-style: normal;
 }
@@ -613,4 +613,19 @@
   .people-panel {
     padding: 17px;
   }
+}
+.people-portal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #dedad0;
+  background: #fff;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0e4c55;
+}
+.people-portal-link:hover:not(:disabled) {
+  background: #e7f0f0;
 }

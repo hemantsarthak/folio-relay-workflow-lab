@@ -8,6 +8,8 @@ import {
 } from "@tanstack/react-query";
 import {
   Activity,
+  Compass,
+  LifeBuoy,
   ArrowDownToLine,
   ArrowLeft,
   ArrowUpRight,
@@ -46,13 +48,17 @@ import {
   type Ticket,
 } from "./data";
 import AccessAudit, { type AuditSnapshot } from "./AccessAudit";
-import PeopleAdmin from "./PeopleAdmin";
+import PeopleAdmin, { loadPeopleWorkspace } from "./PeopleAdmin";
+import HelpPortal, { type PortalRequest } from "./HelpPortal";
+import StartHere, { type RelayView } from "./StartHere";
 import LiveAccess from "../../src/shared/LiveAccess";
 import Operations from "./OperationsReview";
 import TicketWork from "./TicketWork";
 import { loadIncidentDrill } from "./operations";
 import "../../src/shared/demo.css";
 import "./style.css";
+import "./HelpPortal.css";
+import "./theme.css";
 
 const queryClient = new QueryClient();
 const statuses: Status[] = ["Open", "In progress", "Resolved"];
@@ -114,6 +120,59 @@ const initials = (name: string) =>
     .join("")
     .toUpperCase();
 
+const viewCopy: Record<
+  RelayView,
+  { crumb: string; eyebrow: string; title: string; lede: string }
+> = {
+  start: {
+    crumb: "HOW IT WORKS",
+    eyebrow: "START HERE",
+    title: "IT support for a small, fast team.",
+    lede: "Relay covers both sides: employees raise requests in a simple portal, and the IT hire routes, owns and closes them — plus onboarding and offboarding access.",
+  },
+  portal: {
+    crumb: "HELP PORTAL",
+    eyebrow: "EMPLOYEE SIDE",
+    title: "Get unblocked.",
+    lede: "Pick what’s wrong, describe it in plain words, and follow progress. Every request becomes a ticket in the IT queue.",
+  },
+  queue: {
+    crumb: "SUPPORT QUEUE",
+    eyebrow: "IT TEAM",
+    title: "Support queue",
+    lede: "Select a ticket, check the routing suggestion, assign an owner and next step, then resolve.",
+  },
+  people: {
+    crumb: "PEOPLE & ACCESS",
+    eyebrow: "IT TEAM",
+    title: "People & access",
+    lede: "Who has which apps and laptop. Record onboarding and departures, then audit what is still switched on.",
+  },
+  access: {
+    crumb: "ACCESS AUDIT",
+    eyebrow: "IT TEAM",
+    title: "Offboarding audit",
+    lede: "Compare the roster, app accounts and devices before calling an exit complete.",
+  },
+  operations: {
+    crumb: "OPERATIONS REVIEW",
+    eyebrow: "IT TEAM",
+    title: "Operations review",
+    lede: "Unowned tickets and repeated reports, so one outage isn’t handled as five separate problems.",
+  },
+  runbooks: {
+    crumb: "RUNBOOKS",
+    eyebrow: "REFERENCE",
+    title: "Runbooks",
+    lede: "Six short guides the queue suggests once a ticket has a category.",
+  },
+};
+
+function viewFromHash(): RelayView {
+  const hash = location.hash.slice(1);
+  return hash in viewCopy ? (hash as RelayView) : "start";
+}
+
 function App() {
   const [tickets, setTickets] = useState<Ticket[]>(loadTickets);
   const [selectedId, setSelectedId] = useState(() =>
@@ -123,9 +182,22 @@ function App() {
   );
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("Active");
-  const [view, setView] = useState<
-    "queue" | "runbooks" | "access" | "people" | "operations"
-  >("people");
+  const [view, setViewState] = useState<RelayView>(viewFromHash);
+  const setView = (next: RelayView) => {
+    setViewState(next);
+    history.replaceState(
+      null,
+      "",
+      next === "start" ? location.pathname : `#${next}`,
+    );
+    window.scrollTo(0, 0);
+  };
+  useEffect(() => {
+    const onHash = () => setViewState(viewFromHash());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+  const [portalPersonId, setPortalPersonId] = useState("person-maya");
   const [mode, setMode] = useState<Mode>("demo");
   const [creating, setCreating] = useState(false);
   const [ticketPerson, setTicketPerson] = useState<{
@@ -273,6 +345,61 @@ function App() {
       "Escalation packet exported. Review device details before sharing.",
     );
   };
+  const submitFromPortal = (request: PortalRequest) => {
+    const id = `RLY-${Math.max(...tickets.map((t) => Number(t.id.slice(4)))) + 1}`;
+    const at = new Date().toISOString();
+    const description = [
+      `Request type: ${request.type}.`,
+      request.details,
+      request.blocked ? "I cannot work until this is fixed." : "",
+      request.othersAffected
+        ? "Several colleagues report the same problem."
+        : "",
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+    const ticket: Ticket = {
+      id,
+      title: request.title,
+      description,
+      employee: request.person.name,
+      employeeId: request.person.id,
+      team: request.person.team,
+      priority: request.blocked || request.othersAffected ? "High" : "Normal",
+      status: "Open",
+      category: "Untriaged",
+      createdAt: at,
+      audit: [
+        { at, text: `Submitted by ${request.person.name} in the Help portal.` },
+      ],
+    };
+    setTickets((old) => [ticket, ...old]);
+    setNotice(`${id} created and sent to the IT queue.`);
+    const text = `${ticket.title}\n\n${ticket.description}`;
+    if (mode === "demo" || config.data?.liveAvailable)
+      triage.mutate({ id, text, mode, routingRevision: 0 });
+    return id;
+  };
+  const navButton = (
+    id: RelayView,
+    icon: React.ReactNode,
+    label: string,
+    hint?: string,
+    count?: number,
+  ) => (
+    <button
+      className={view === id ? "nav-link selected" : "nav-link"}
+      aria-current={view === id ? "page" : undefined}
+      onClick={() => setView(id)}
+    >
+      {icon}
+      <span>
+        {label}
+        {hint && <span className="nav-hint">{hint}</span>}
+      </span>
+      {count !== undefined && <span className="nav-count">{count}</span>}
+    </button>
+  );
   const rb = runbooks[selected.category];
   const busy = triage.isPending && triage.variables.id === selected.id;
   return (
@@ -284,84 +411,72 @@ function App() {
           </span>
           relay<span className="brand-dot">.</span>
         </a>
-        <div className="workspace-label">
-          <span className="workspace-avatar">HS</span>
-          <div>
-            Hemant’s workspace<small>IT operations demo</small>
-          </div>
-        </div>
-        <p className="nav-caption">WORKSPACE</p>
         <nav aria-label="Main navigation">
-          <button
-            className={view === "people" ? "nav-link selected" : "nav-link"}
-            onClick={() => setView("people")}
-          >
-            <Users size={18} />
-            People & access
-          </button>
-          <button
-            className={view === "queue" ? "nav-link selected" : "nav-link"}
-            onClick={() => setView("queue")}
-          >
-            <Inbox size={18} />
-            Support queue<span className="nav-count">{active.length}</span>
-          </button>
-          <button
-            className={view === "runbooks" ? "nav-link selected" : "nav-link"}
-            onClick={() => setView("runbooks")}
-          >
-            <BookOpen size={18} />
-            Runbook library<span className="nav-mini">6</span>
-          </button>
-          <button
-            className={view === "access" ? "nav-link selected" : "nav-link"}
-            onClick={() => setView("access")}
-          >
-            <ShieldCheck size={18} />
-            Access audit
-          </button>
-          <button
-            className={view === "operations" ? "nav-link selected" : "nav-link"}
-            onClick={() => setView("operations")}
-          >
-            <Activity size={18} /> Operations review
-          </button>
+          <p className="nav-section">Start</p>
+          {navButton("start", <Compass size={18} />, "How Relay works")}
+          <p className="nav-section">Employee side</p>
+          {navButton(
+            "portal",
+            <LifeBuoy size={18} />,
+            "Help portal",
+            "Raise & track requests",
+          )}
+          <p className="nav-section">IT team</p>
+          {navButton(
+            "queue",
+            <Inbox size={18} />,
+            "Support queue",
+            undefined,
+            active.length,
+          )}
+          {navButton("people", <Users size={18} />, "People & access")}
+          {navButton("access", <ShieldCheck size={18} />, "Access audit")}
+          {navButton("operations", <Activity size={18} />, "Operations review")}
+          <p className="nav-section">Reference</p>
+          {navButton("runbooks", <BookOpen size={18} />, "Runbooks")}
           <a className="nav-link" href="/api/collector" download>
             <Monitor size={18} />
             Windows collector
             <ArrowDownToLine size={15} />
           </a>
         </nav>
-        <div className="sidebar-note">
-          <span className="small-status-dot" /> Built for the human side of IT
-          <p>
-            Understand the issue.
-            <br />
-            Make the next step clear.
-          </p>
-        </div>
         <div className="sidebar-bottom">
-          <div className="connection">
-            <span
-              className={
-                config.data?.liveAvailable
-                  ? "connection-dot ready"
-                  : "connection-dot"
-              }
-            />
+          <div
+            className="engine-switch"
+            role="group"
+            aria-label="Routing engine"
+          >
+            <span>Routing engine</span>
             <div>
-              {config.data?.liveAvailable
-                ? "Jev key configured"
-                : "Local demo available"}
-              <small>
-                {config.data?.liveAvailable
-                  ? config.data.model
-                  : "No API key required"}
-              </small>
+              <button
+                className={mode === "demo" ? "selected" : ""}
+                onClick={() => setMode("demo")}
+              >
+                Local rules
+              </button>
+              <button
+                className={mode === "live" ? "selected" : ""}
+                onClick={() => setMode("live")}
+                disabled={!config.data?.liveAvailable}
+                title={
+                  config.data?.liveAvailable
+                    ? `Jev model ${config.data.model}`
+                    : "No Jev key configured on this server"
+                }
+              >
+                Jev live
+              </button>
             </div>
+            <small>
+              {mode === "live"
+                ? `Requests go to ${config.data?.model || "Jev"} via the server.`
+                : config.data?.liveAvailable
+                  ? "Transparent keyword rules. Switch to try Jev."
+                  : "Transparent keyword rules. Jev needs a server key."}
+            </small>
           </div>
           <a href="/">
-            Portfolio projects
+            All projects
             <ArrowUpRight size={15} />
           </a>
         </div>
@@ -369,47 +484,18 @@ function App() {
       <main className="workspace">
         <div className="topbar">
           <span>
-            WORKSPACE <ChevronRight size={12} />{" "}
-            {view === "queue"
-              ? "SUPPORT QUEUE"
-              : view === "people"
-                ? "PEOPLE & ACCESS"
-                : view === "access"
-                  ? "ACCESS AUDIT"
-                  : view === "operations"
-                    ? "OPERATIONS REVIEW"
-                    : "RUNBOOK LIBRARY"}
+            RELAY <ChevronRight size={12} /> {viewCopy[view].crumb}
           </span>
           <div className="prototype-pill">
             <span />
-            PORTFOLIO PROTOTYPE
+            SYNTHETIC DEMO · NOT AFFILIATED WITH RIVET
           </div>
         </div>
         <header className="page-header">
           <div>
-            <div className="eyebrow">A LITTLE LESS FRICTION</div>
-            <h1>
-              {view === "queue"
-                ? "Good support starts here."
-                : view === "people"
-                  ? "The people behind the systems."
-                  : view === "access"
-                    ? "Offboarding with evidence."
-                    : view === "operations"
-                      ? "From tickets to better operations."
-                      : "A clear next step."}
-            </h1>
-            <p>
-              {view === "queue"
-                ? "Turn a blocked workday into a clear, actionable next step."
-                : view === "people"
-                  ? "Follow the employee lifecycle from profile to access review."
-                  : view === "access"
-                    ? "Compare roster, SaaS access, and devices before declaring an exit complete."
-                    : view === "operations"
-                      ? "Assign ownership, document follow-through, and investigate repeated reports."
-                      : "Six curated guides for investigating common employee issues."}
-            </p>
+            <div className="eyebrow">{viewCopy[view].eyebrow}</div>
+            <h1>{viewCopy[view].title}</h1>
+            <p>{viewCopy[view].lede}</p>
           </div>
           {view === "queue" && (
             <div className="queue-header-actions">
@@ -449,7 +535,25 @@ function App() {
             {ticketStorageIssue}
           </p>
         )}
-        {view === "people" ? (
+        {view === "start" ? (
+          <StartHere go={setView} />
+        ) : view === "portal" ? (
+          <HelpPortal
+            people={loadPeopleWorkspace().people}
+            personId={portalPersonId}
+            onPersonChange={setPortalPersonId}
+            tickets={tickets}
+            routingIds={
+              triage.isPending && triage.variables ? [triage.variables.id] : []
+            }
+            engineLabel={
+              mode === "live"
+                ? `Jev (${config.data?.model || "live"})`
+                : "local rules"
+            }
+            onSubmit={submitFromPortal}
+          />
+        ) : view === "people" ? (
           <PeopleAdmin
             tickets={tickets}
             onOpenTicket={(id) => {
@@ -459,9 +563,9 @@ function App() {
               setSearch("");
               setMobileDetail(true);
             }}
-            onRequestHelp={(person) => {
-              setTicketPerson(person);
-              setCreating(true);
+            onOpenPortal={(personId) => {
+              setPortalPersonId(personId);
+              setView("portal");
             }}
             onAudit={(sources) => {
               setAuditSnapshot({ ...sources, id: crypto.randomUUID() });
@@ -711,21 +815,13 @@ function App() {
                   <span className="synthetic-label">
                     {selected.audit.some((a) => a.text.startsWith("Synthetic"))
                       ? "SYNTHETIC EXAMPLE"
-                      : "MANUALLY CREATED"}
+                      : selected.audit.some((a) =>
+                            a.text.includes("Help portal"),
+                          )
+                        ? "FROM HELP PORTAL"
+                        : "CREATED BY IT"}
                   </span>
                 </div>
-                <TicketWork
-                  key={selected.id}
-                  ticket={selected}
-                  onSave={(patch) => {
-                    update(
-                      selected.id,
-                      patch,
-                      `Work plan updated. Owner: ${patch.owner}. Note: ${patch.nextStep}`,
-                    );
-                    setNotice("Owner and work plan saved to this ticket.");
-                  }}
-                />
                 <section className="triage-card">
                   <div className="card-title">
                     <span className="spark-icon">
@@ -880,6 +976,18 @@ function App() {
                     </select>
                   </div>
                 </section>
+                <TicketWork
+                  key={selected.id}
+                  ticket={selected}
+                  onSave={(patch) => {
+                    update(
+                      selected.id,
+                      patch,
+                      `Work plan updated. Owner: ${patch.owner}. Note: ${patch.nextStep}`,
+                    );
+                    setNotice("Owner and work plan saved to this ticket.");
+                  }}
+                />
                 <section className="evidence-section">
                   <div className="section-heading">
                     <div>

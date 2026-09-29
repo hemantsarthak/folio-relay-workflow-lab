@@ -21,7 +21,7 @@ The localhost Express server stays local. The hosted handler checks the request 
 
 The public site works in Local rules mode without environment secrets. To enable protected live Jev, set `OPENCODE_API_KEY` (or `TYPESAFE_API_KEY`) and a separate `LIVE_DEMO_ACCESS_CODE` in Netlify's server environment, then redeploy. Set `OPENCODE_MODEL` only if changing the provider model. Do not commit `.env` or put keys in `VITE_` variables.
 
-The reviewer enters the access code in either app's **Reviewer live access** control. It is sent as `X-Demo-Access` only for live calls and stored in tab session storage. The function verifies it before contacting the provider. A server key alone never enables public live inference. This shared code is a demo quota gate, not multi-user authentication.
+The reviewer enters the access code in either app's **Have a reviewer code? Unlock live Jev** control, then chooses **Jev live** in the sidebar. It is sent as `X-Demo-Access` only for live calls and stored in tab session storage. The function verifies it before contacting the provider. A server key alone never enables public live inference. This shared code is a demo quota gate, not multi-user authentication.
 
 Live OpenCode Zen is enabled on the published demo. The private reviewer code is saved in the ignored `private/reviewer-access.txt` file; share it privately. Neither the provider key nor reviewer code is in Git or the public assets. The existing Netlify Free account does not allow selecting individual variable scopes, so the production variables use its default scopes. They are not `VITE_` variables and are never included in the frontend. Netlify account administrators can read these environment values; paid-plan secret masking is not enabled.
 

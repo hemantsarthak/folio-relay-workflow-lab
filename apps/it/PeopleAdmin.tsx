@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowRight,
-  Laptop,
   Plus,
   Search,
   ShieldCheck,
   UserRound,
-  Users,
   X,
 } from "lucide-react";
 import { downloadJson } from "../../src/shared/api";
@@ -42,7 +40,7 @@ const blankPerson: PersonInput = {
   role: "",
   startDate: today,
 };
-function loadWorkspace(): PeopleWorkspace {
+export function loadPeopleWorkspace(): PeopleWorkspace {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -58,16 +56,16 @@ function loadWorkspace(): PeopleWorkspace {
 export default function PeopleAdmin({
   tickets,
   onOpenTicket,
-  onRequestHelp,
+  onOpenPortal,
   onAudit,
 }: {
   tickets: Ticket[];
   onOpenTicket: (id: string) => void;
-  onRequestHelp: (person: { id: string; name: string; team: string }) => void;
+  onOpenPortal: (personId: string) => void;
   onAudit: (sources: ReturnType<typeof toAuditInputs>) => void;
 }) {
-  const [workspace, setWorkspace] = useState<PeopleWorkspace>(loadWorkspace);
-  const [mode, setMode] = useState<"admin" | "employee">("admin");
+  const [workspace, setWorkspace] =
+    useState<PeopleWorkspace>(loadPeopleWorkspace);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "active" | "departed">("all");
   const [personForm, setPersonForm] = useState<"add" | "edit" | null>(null);
@@ -190,18 +188,6 @@ export default function PeopleAdmin({
 
   return (
     <section className="people-admin" aria-label="People and access workspace">
-      <div className="people-intro">
-        <div>
-          <span>PEOPLE & ACCESS · LOCAL SIMULATION</span>
-          <h2>Know who has what.</h2>
-          <p>
-            Manage employee records, inspect access and devices, and hand off a
-            current snapshot for review. No real identity or MDM action runs
-            here.
-          </p>
-        </div>
-        <Users size={30} />
-      </div>
       <div className="people-stats">
         <div>
           <span>ACTIVE EMPLOYEES</span>
@@ -218,20 +204,14 @@ export default function PeopleAdmin({
         </div>
       </div>
       <div className="people-toolbar">
-        <div className="people-role-switch" aria-label="View as">
-          <button
-            className={mode === "admin" ? "selected" : ""}
-            onClick={() => setMode("admin")}
-          >
-            IT admin view
-          </button>
-          <button
-            className={mode === "employee" ? "selected" : ""}
-            onClick={() => setMode("employee")}
-          >
-            Employee view
-          </button>
-        </div>
+        <button
+          className="people-portal-link"
+          onClick={() => onOpenPortal(selected.id)}
+          disabled={selected.status === "departed"}
+        >
+          <UserRound size={15} /> See {selected.name.split(" ")[0]}’s Help
+          portal
+        </button>
         <div>
           <button onClick={() => onAudit(toAuditInputs(workspace))}>
             <ShieldCheck size={15} /> Audit directory snapshot{" "}
@@ -262,11 +242,9 @@ export default function PeopleAdmin({
               <span>DIRECTORY</span>
               <h3>Employees</h3>
             </div>
-            {mode === "admin" && (
-              <button onClick={startAdd}>
-                <Plus size={15} /> Add
-              </button>
-            )}
+            <button onClick={startAdd}>
+              <Plus size={15} /> Add
+            </button>
           </div>
           <label className="people-search">
             <Search size={15} />
@@ -314,7 +292,7 @@ export default function PeopleAdmin({
           </div>
         </aside>
         <div className="people-detail">
-          {personForm && mode === "admin" ? (
+          {personForm ? (
             <section
               className="people-panel people-form"
               aria-label={
@@ -411,19 +389,14 @@ export default function PeopleAdmin({
               <section className="people-panel people-profile">
                 <div className="people-section-head">
                   <div>
-                    <span>
-                      {mode === "admin" ? "IT ADMIN VIEW" : "EMPLOYEE VIEW"} ·{" "}
-                      {selected.status.toUpperCase()}
-                    </span>
+                    <span>IT ADMIN VIEW · {selected.status.toUpperCase()}</span>
                     <h3>{selected.name}</h3>
                     <p>
                       {selected.role} · {selected.team}
                     </p>
                   </div>
                   <div className="people-profile-actions">
-                    {mode === "admin" && (
-                      <button onClick={startEdit}>Edit profile</button>
-                    )}
+                    <button onClick={startEdit}>Edit profile</button>
                     <button
                       onClick={() =>
                         downloadJson(`${selected.id}-profile.json`, {
@@ -458,155 +431,132 @@ export default function PeopleAdmin({
                   </div>
                 </div>
               </section>
-              {mode === "employee" ? (
-                <>
-                  <section className="people-panel">
-                    <div className="people-section-head">
-                      <div>
-                        <span>MY WORKSPACE</span>
-                        <h3>Help and equipment</h3>
-                      </div>
-                      <button
-                        className="people-primary"
-                        disabled={selected.status === "departed"}
-                        onClick={() =>
-                          onRequestHelp({
-                            id: selected.id,
-                            name: selected.name,
-                            team: selected.team,
-                          })
-                        }
-                      >
-                        <Plus size={15} /> Request help
-                      </button>
+              <>
+                <section className="people-panel">
+                  <div className="people-section-head">
+                    <div>
+                      <span>ACCESS & DEVICES</span>
+                      <h3>Provisioning record</h3>
                     </div>
-                    <div className="people-access-summary">
-                      <div>
-                        <UserRound size={19} />
-                        <strong>{selected.accounts.length} applications</strong>
-                        <small>
-                          {selected.accounts
-                            .map(
-                              (account) =>
-                                `${account.system} (${account.status})`,
-                            )
-                            .join(", ") || "No applications recorded"}
-                        </small>
-                      </div>
-                      <div>
-                        <Laptop size={19} />
-                        <strong>
-                          {selected.device?.assetId || "No device"}
-                        </strong>
-                        <small>
-                          {selected.device?.status || "No assignment recorded"}
-                        </small>
-                      </div>
-                    </div>
-                    <p className="people-note">
-                      This is a read-only employee perspective of the synthetic
-                      directory. For access changes, contact an authorized IT
-                      admin.
-                    </p>
-                  </section>
-                  <section className="people-panel">
-                    <div className="people-section-head">
-                      <div>
-                        <span>SUPPORT</span>
-                        <h3>My requests</h3>
-                      </div>
-                    </div>
-                    {personTickets.length ? (
-                      <div className="people-tickets">
-                        {personTickets.map((ticket) => (
+                  </div>
+                  <p className="people-note">
+                    Set an operator note before changing a simulated status.
+                    Refresh the audit snapshot to see the effect.
+                  </p>
+                  <label className="people-operator-note">
+                    Operator note
+                    <input
+                      value={operatorNote}
+                      onChange={(event) => setOperatorNote(event.target.value)}
+                      placeholder="What did you check or change? (8+ characters)"
+                    />
+                  </label>
+                  <div className="people-access-grid">
+                    <div>
+                      <h4>Applications</h4>
+                      {selected.accounts.length === 0 && (
+                        <p>No applications recorded.</p>
+                      )}
+                      {selected.accounts.map((account) => (
+                        <div className="people-access-row" key={account.system}>
+                          <span>
+                            <strong>{account.system}</strong>
+                            <small>Current demo status</small>
+                          </span>
+                          <select
+                            aria-label={`${account.system} status`}
+                            value={account.status}
+                            onChange={(event) =>
+                              apply(
+                                () =>
+                                  setAccountStatus(
+                                    workspace,
+                                    selected.id,
+                                    account.system,
+                                    event.target.value as AccountStatus,
+                                    operatorNote,
+                                  ),
+                                `${account.system} status updated locally.`,
+                              )
+                            }
+                          >
+                            <option value="active">Active</option>
+                            <option value="suspended">Suspended</option>
+                            <option value="disabled">Disabled</option>
+                          </select>
+                        </div>
+                      ))}
+                      {selected.status === "active" && (
+                        <div className="people-add-row">
+                          <input
+                            aria-label="Application name"
+                            placeholder="Application name"
+                            value={newApp}
+                            onChange={(event) => setNewApp(event.target.value)}
+                          />
                           <button
-                            key={ticket.id}
-                            onClick={() => onOpenTicket(ticket.id)}
-                          >
-                            <span>
-                              <strong>{ticket.title}</strong>
-                              <small>{ticket.id}</small>
-                            </span>
-                            <em>{ticket.status}</em>
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="people-note">
-                        No support tickets are linked to this employee name.
-                      </p>
-                    )}
-                  </section>
-                </>
-              ) : (
-                <>
-                  <section className="people-panel">
-                    <div className="people-section-head">
-                      <div>
-                        <span>ACCESS & DEVICES</span>
-                        <h3>Provisioning record</h3>
-                      </div>
-                    </div>
-                    <p className="people-note">
-                      Set an operator note before changing a simulated status.
-                      Refresh the audit snapshot to see the effect.
-                    </p>
-                    <label className="people-operator-note">
-                      Operator note
-                      <input
-                        value={operatorNote}
-                        onChange={(event) =>
-                          setOperatorNote(event.target.value)
-                        }
-                        placeholder="What did you check or change? (8+ characters)"
-                      />
-                    </label>
-                    <div className="people-access-grid">
-                      <div>
-                        <h4>Applications</h4>
-                        {selected.accounts.length === 0 && (
-                          <p>No applications recorded.</p>
-                        )}
-                        {selected.accounts.map((account) => (
-                          <div
-                            className="people-access-row"
-                            key={account.system}
-                          >
-                            <span>
-                              <strong>{account.system}</strong>
-                              <small>Current demo status</small>
-                            </span>
-                            <select
-                              aria-label={`${account.system} status`}
-                              value={account.status}
-                              onChange={(event) =>
+                            onClick={() => {
+                              if (
                                 apply(
                                   () =>
-                                    setAccountStatus(
+                                    addAccount(
                                       workspace,
                                       selected.id,
-                                      account.system,
-                                      event.target.value as AccountStatus,
+                                      newApp,
                                       operatorNote,
                                     ),
-                                  `${account.system} status updated locally.`,
+                                  "Application added to the simulated record.",
                                 )
-                              }
-                            >
-                              <option value="active">Active</option>
-                              <option value="suspended">Suspended</option>
-                              <option value="disabled">Disabled</option>
-                            </select>
-                          </div>
-                        ))}
-                        {selected.status === "active" && (
+                              )
+                                setNewApp("");
+                            }}
+                          >
+                            Add app
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <h4>Device</h4>
+                      {selected.device ? (
+                        <div className="people-access-row">
+                          <span>
+                            <strong>{selected.device.assetId}</strong>
+                            <small>Recorded asset</small>
+                          </span>
+                          <select
+                            aria-label="Device status"
+                            value={selected.device.status}
+                            onChange={(event) =>
+                              apply(
+                                () =>
+                                  setDeviceStatus(
+                                    workspace,
+                                    selected.id,
+                                    event.target.value as DeviceStatus,
+                                    operatorNote,
+                                  ),
+                                "Device status updated locally.",
+                              )
+                            }
+                          >
+                            <option value="assigned">Assigned</option>
+                            <option value="returned">Returned</option>
+                            <option value="wiped">Wiped</option>
+                          </select>
+                        </div>
+                      ) : (
+                        <p>No device recorded.</p>
+                      )}
+                      {selected.status === "active" &&
+                        selected.device?.status !== "assigned" && (
                           <div className="people-add-row">
                             <input
-                              aria-label="Application name"
-                              placeholder="Application name"
-                              value={newApp}
+                              aria-label="Asset ID"
+                              placeholder="Asset ID"
+                              value={newAsset}
                               onChange={(event) =>
-                                setNewApp(event.target.value)
+                                setNewAsset(event.target.value)
                               }
                             />
                             <button
@@ -614,234 +564,196 @@ export default function PeopleAdmin({
                                 if (
                                   apply(
                                     () =>
-                                      addAccount(
+                                      assignDevice(
                                         workspace,
                                         selected.id,
-                                        newApp,
+                                        newAsset,
                                         operatorNote,
                                       ),
-                                    "Application added to the simulated record.",
+                                    "Device assigned in the simulated record.",
                                   )
                                 )
-                                  setNewApp("");
+                                  setNewAsset("");
                               }}
                             >
-                              Add app
+                              Assign
                             </button>
                           </div>
                         )}
-                      </div>
-                      <div>
-                        <h4>Device</h4>
-                        {selected.device ? (
-                          <div className="people-access-row">
-                            <span>
-                              <strong>{selected.device.assetId}</strong>
-                              <small>Recorded asset</small>
-                            </span>
-                            <select
-                              aria-label="Device status"
-                              value={selected.device.status}
-                              onChange={(event) =>
-                                apply(
-                                  () =>
-                                    setDeviceStatus(
-                                      workspace,
-                                      selected.id,
-                                      event.target.value as DeviceStatus,
-                                      operatorNote,
-                                    ),
-                                  "Device status updated locally.",
-                                )
-                              }
-                            >
-                              <option value="assigned">Assigned</option>
-                              <option value="returned">Returned</option>
-                              <option value="wiped">Wiped</option>
-                            </select>
-                          </div>
-                        ) : (
-                          <p>No device recorded.</p>
-                        )}
-                        {selected.status === "active" &&
-                          selected.device?.status !== "assigned" && (
-                            <div className="people-add-row">
-                              <input
-                                aria-label="Asset ID"
-                                placeholder="Asset ID"
-                                value={newAsset}
-                                onChange={(event) =>
-                                  setNewAsset(event.target.value)
-                                }
-                              />
-                              <button
-                                onClick={() => {
-                                  if (
-                                    apply(
-                                      () =>
-                                        assignDevice(
-                                          workspace,
-                                          selected.id,
-                                          newAsset,
-                                          operatorNote,
-                                        ),
-                                      "Device assigned in the simulated record.",
-                                    )
-                                  )
-                                    setNewAsset("");
-                                }}
-                              >
-                                Assign
-                              </button>
-                            </div>
-                          )}
-                      </div>
                     </div>
-                  </section>
-                  <section className="people-panel people-lifecycle">
-                    <div className="people-section-head">
-                      <div>
-                        <span>LIFECYCLE</span>
-                        <h3>
-                          {selected.status === "active"
-                            ? "Departure handoff"
-                            : "Offboarding worklist"}
-                        </h3>
-                      </div>
-                      {selected.status === "active" && (
-                        <button
-                          onClick={() => {
-                            setDepartOpen(true);
-                            setError("");
-                          }}
-                        >
-                          Start offboarding
-                        </button>
-                      )}
+                  </div>
+                </section>
+                <section className="people-panel people-lifecycle">
+                  <div className="people-section-head">
+                    <div>
+                      <span>LIFECYCLE</span>
+                      <h3>
+                        {selected.status === "active"
+                          ? "Departure handoff"
+                          : "Offboarding worklist"}
+                      </h3>
                     </div>
-                    {selected.status === "active" ? (
-                      <p className="people-note">
-                        Marking a departure leaves the current access and device
-                        statuses visible for follow-up. It does not disable
-                        anything.
-                      </p>
-                    ) : (
-                      <div className="people-checklist">
-                        <div
-                          className={
-                            selected.accounts.some(
-                              (account) => account.status === "active",
-                            )
-                              ? "open"
-                              : "done"
-                          }
-                        >
-                          {selected.accounts.some(
+                    {selected.status === "active" && (
+                      <button
+                        onClick={() => {
+                          setDepartOpen(true);
+                          setError("");
+                        }}
+                      >
+                        Start offboarding
+                      </button>
+                    )}
+                  </div>
+                  {selected.status === "active" ? (
+                    <p className="people-note">
+                      Marking a departure leaves the current access and device
+                      statuses visible for follow-up. It does not disable
+                      anything.
+                    </p>
+                  ) : (
+                    <div className="people-checklist">
+                      <div
+                        className={
+                          selected.accounts.some(
                             (account) => account.status === "active",
                           )
-                            ? "Open"
-                            : "Checked"}{" "}
-                          · SaaS access{" "}
-                          {
-                            selected.accounts.filter(
-                              (account) => account.status === "active",
-                            ).length
-                          }{" "}
-                          active
-                        </div>
-                        <div
-                          className={
-                            selected.device?.status === "assigned"
-                              ? "open"
-                              : "done"
+                            ? "open"
+                            : "done"
+                        }
+                      >
+                        {selected.accounts.some(
+                          (account) => account.status === "active",
+                        )
+                          ? "Open"
+                          : "Checked"}{" "}
+                        · SaaS access{" "}
+                        {
+                          selected.accounts.filter(
+                            (account) => account.status === "active",
+                          ).length
+                        }{" "}
+                        active
+                      </div>
+                      <div
+                        className={
+                          selected.device?.status === "assigned"
+                            ? "open"
+                            : "done"
+                        }
+                      >
+                        {selected.device?.status === "assigned"
+                          ? "Open"
+                          : "Checked"}{" "}
+                        · Device {selected.device?.status || "not recorded"}
+                      </div>
+                      <p>
+                        These checks reflect this local record only. Confirm the
+                        source systems before completing real offboarding.
+                      </p>
+                    </div>
+                  )}
+                  {departOpen && (
+                    <div className="people-depart-form">
+                      <label>
+                        Exit date
+                        <input
+                          type="date"
+                          value={exitDate}
+                          onChange={(event) => setExitDate(event.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Operator note
+                        <textarea
+                          value={operatorNote}
+                          onChange={(event) =>
+                            setOperatorNote(event.target.value)
                           }
-                        >
-                          {selected.device?.status === "assigned"
-                            ? "Open"
-                            : "Checked"}{" "}
-                          · Device {selected.device?.status || "not recorded"}
-                        </div>
-                        <p>
-                          These checks reflect this local record only. Confirm
-                          the source systems before completing real offboarding.
-                        </p>
-                      </div>
-                    )}
-                    {departOpen && (
-                      <div className="people-depart-form">
-                        <label>
-                          Exit date
-                          <input
-                            type="date"
-                            value={exitDate}
-                            onChange={(event) =>
-                              setExitDate(event.target.value)
-                            }
-                          />
-                        </label>
-                        <label>
-                          Operator note
-                          <textarea
-                            value={operatorNote}
-                            onChange={(event) =>
-                              setOperatorNote(event.target.value)
-                            }
-                            rows={2}
-                            placeholder="Departure confirmed with People Ops…"
-                          />
-                        </label>
-                        <div>
-                          <button
-                            className="people-primary"
-                            onClick={() => {
-                              try {
-                                setWorkspace(
-                                  departPerson(
-                                    workspace,
-                                    selected.id,
-                                    exitDate,
-                                    operatorNote,
-                                  ),
-                                );
-                                setDepartOpen(false);
-                                setOperatorNote("");
-                                setError("");
-                                setNotice(
-                                  "Departure recorded. Run the access audit to identify open items.",
-                                );
-                              } catch (caught) {
-                                setError((caught as Error).message);
-                              }
-                            }}
-                          >
-                            Record departure
-                          </button>
-                          <button onClick={() => setDepartOpen(false)}>
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </section>
-                  <section className="people-panel">
-                    <div className="people-section-head">
+                          rows={2}
+                          placeholder="Departure confirmed with People Ops…"
+                        />
+                      </label>
                       <div>
-                        <span>ACTIVITY</span>
-                        <h3>Admin record</h3>
+                        <button
+                          className="people-primary"
+                          onClick={() => {
+                            try {
+                              setWorkspace(
+                                departPerson(
+                                  workspace,
+                                  selected.id,
+                                  exitDate,
+                                  operatorNote,
+                                ),
+                              );
+                              setDepartOpen(false);
+                              setOperatorNote("");
+                              setError("");
+                              setNotice(
+                                "Departure recorded. Run the access audit to identify open items.",
+                              );
+                            } catch (caught) {
+                              setError((caught as Error).message);
+                            }
+                          }}
+                        >
+                          Record departure
+                        </button>
+                        <button onClick={() => setDepartOpen(false)}>
+                          Cancel
+                        </button>
                       </div>
                     </div>
-                    <ol className="people-history">
-                      {selected.events.map((entry, index) => (
-                        <li key={`${entry.at}-${index}`}>
-                          <strong>{entry.action}</strong>
-                          <span>{entry.note}</span>
-                          <small>{new Date(entry.at).toLocaleString()}</small>
-                        </li>
+                  )}
+                </section>
+                <section className="people-panel">
+                  <div className="people-section-head">
+                    <div>
+                      <span>SUPPORT</span>
+                      <h3>Requests from {selected.name.split(" ")[0]}</h3>
+                    </div>
+                  </div>
+                  {personTickets.length ? (
+                    <div className="people-tickets">
+                      {personTickets.map((ticket) => (
+                        <button
+                          key={ticket.id}
+                          onClick={() => onOpenTicket(ticket.id)}
+                        >
+                          <span>
+                            <strong>{ticket.title}</strong>
+                            <small>
+                              {ticket.id} · {ticket.category}
+                            </small>
+                          </span>
+                          <em>{ticket.status}</em>
+                        </button>
                       ))}
-                    </ol>
-                  </section>
-                </>
-              )}
+                    </div>
+                  ) : (
+                    <p className="people-note">
+                      No support requests from this person yet.
+                    </p>
+                  )}
+                </section>
+                <section className="people-panel">
+                  <div className="people-section-head">
+                    <div>
+                      <span>ACTIVITY</span>
+                      <h3>Admin record</h3>
+                    </div>
+                  </div>
+                  <ol className="people-history">
+                    {selected.events.map((entry, index) => (
+                      <li key={`${entry.at}-${index}`}>
+                        <strong>{entry.action}</strong>
+                        <span>{entry.note}</span>
+                        <small>{new Date(entry.at).toLocaleString()}</small>
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+              </>
             </>
           )}
         </div>

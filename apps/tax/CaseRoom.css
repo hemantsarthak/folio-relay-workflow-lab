@@ -1,5 +1,5 @@
 .case-room {
-  color: #273c30;
+  color: #2f3134;
 }
 .case-room-top,
 .case-toolbar,
@@ -12,15 +12,15 @@
   gap: 14px;
 }
 .case-room-top {
-  background: #e9efe4;
-  border: 1px solid #d7e1d2;
+  background: #edebe6;
+  border: 1px solid #e0dcd3;
   border-radius: 10px 10px 0 0;
   padding: 27px 30px;
 }
 .case-kicker,
 .case-step {
   display: block;
-  color: #698353;
+  color: #716e65;
   font-size: 10px;
   font-weight: 750;
   letter-spacing: 1.5px;
@@ -35,12 +35,12 @@
 }
 .case-room-top p {
   line-height: 1.5;
-  color: #627262;
+  color: #706d64;
   max-width: 630px;
 }
 .case-status {
-  background: #fffdf7;
-  border: 1px solid #d7dfce;
+  background: #fdfcf9;
+  border: 1px solid #d9d7d4;
   border-radius: 100px;
   font-size: 11px;
   font-weight: 700;
@@ -49,13 +49,13 @@
   white-space: nowrap;
 }
 .case-status.resolved {
-  background: #d8e9d0;
-  border-color: #bdd5b1;
+  background: #d3e4e6;
+  border-color: #4b838b;
 }
 .case-toolbar {
   flex-wrap: wrap;
   background: #fffefa;
-  border: 1px solid #e0e4d9;
+  border: 1px solid #e4e1d9;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   padding: 12px 17px;
@@ -63,7 +63,7 @@
 }
 .case-role-switch {
   justify-content: flex-start;
-  background: #f2f4ed;
+  background: #f3f1ee;
   padding: 3px;
   border-radius: 7px;
   gap: 3px;
@@ -76,7 +76,7 @@
 }
 .case-role-switch button.selected {
   background: #fff;
-  box-shadow: 0 1px 4px #263a231a;
+  box-shadow: 0 1px 4px #2c2e311a;
 }
 .case-actions {
   justify-content: flex-end;
@@ -84,7 +84,7 @@
   gap: 7px;
 }
 .case-actions span {
-  color: #788678;
+  color: #878277;
   font-size: 10px;
   margin-right: 4px;
 }
@@ -94,7 +94,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid #d9dfd1;
+  border: 1px solid #dad9d6;
   border-radius: 5px;
   padding: 8px 10px;
   background: #fff;
@@ -104,21 +104,21 @@
 .case-actions button:hover,
 .case-upload-box button:hover,
 .case-sample-button:hover {
-  background: #edf2e8;
+  background: #f0eeea;
 }
 .case-alert {
-  background: #e9f1df;
-  border: 1px solid #c7d6b7;
-  color: #3c5730;
+  background: #e2edee;
+  border: 1px solid #cac8c3;
+  color: #48453f;
   border-radius: 6px;
   padding: 11px 14px;
   margin-bottom: 18px;
   line-height: 1.5;
 }
 .case-alert.error {
-  background: #fff0e8;
-  border-color: #edc6b1;
-  color: #8a3729;
+  background: #f9f3ee;
+  border-color: #e5cfb9;
+  color: #8b3528;
 }
 .case-grid {
   display: grid;
@@ -134,7 +134,7 @@
 }
 .case-card {
   background: #fffefa;
-  border: 1px solid #e0e4d9;
+  border: 1px solid #e4e1d9;
   border-radius: 9px;
   padding: 23px 25px;
   min-width: 0;
@@ -147,7 +147,7 @@
   margin: 9px 0 10px;
 }
 .case-card > p {
-  color: #677568;
+  color: #757167;
   line-height: 1.55;
   margin-bottom: 13px;
 }
@@ -156,13 +156,13 @@
   align-items: flex-start;
   gap: 12px;
   padding: 15px;
-  background: #f6f7f0;
-  border: 1px solid #e3e6dc;
+  background: #f0f6f7;
+  border: 1px solid #e6e3dc;
   border-radius: 7px;
   margin: 16px 0;
 }
 .case-evidence > svg {
-  color: #688357;
+  color: #747066;
   flex-shrink: 0;
 }
 .case-evidence > div {
@@ -181,13 +181,13 @@
   margin: 9px 0;
   padding: 10px 12px;
   background: #fffefa;
-  border-left: 3px solid #d69b62;
+  border-left: 3px solid #1d6f7c;
   font-size: 12px;
   white-space: pre-wrap;
 }
 .case-evidence small,
 .case-message small {
-  color: #7b887b;
+  color: #89857a;
   font-size: 10px;
   line-height: 1.5;
 }
@@ -204,11 +204,11 @@
 }
 .case-card textarea {
   width: 100%;
-  border: 1px solid #d5dbcf;
+  border: 1px solid #d8d6d2;
   background: #fff;
   border-radius: 6px;
   padding: 11px;
-  color: #283c30;
+  color: #303135;
   resize: vertical;
   line-height: 1.5;
 }
@@ -217,7 +217,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #31583f;
+  background: #494640;
   color: #fff;
   border-radius: 5px;
   padding: 11px 14px;
@@ -226,12 +226,12 @@
   margin-top: 12px;
 }
 .case-primary:hover {
-  background: #244a31;
+  background: #24454a;
 }
 .case-message {
-  border-left: 3px solid #8da772;
+  border-left: 3px solid #938f86;
   padding: 13px 15px;
-  background: #f1f5ec;
+  background: #ecf3f5;
   margin: 14px 0;
   line-height: 1.5;
 }
@@ -254,12 +254,12 @@
   font-size: 11px;
 }
 .case-inline-warning {
-  background: #fff0e6;
-  color: #863d28;
+  background: #f8f3ed;
+  color: #873427;
 }
 .case-inline-success {
-  background: #e9f2e4;
-  color: #376042;
+  background: #e5eff1;
+  color: #504d47;
 }
 .case-inline-warning svg,
 .case-inline-success svg {
@@ -277,7 +277,7 @@
   margin: 15px 0 0;
 }
 .case-timeline li {
-  border-left: 2px solid #d3dfc9;
+  border-left: 2px solid #d7d5d1;
   padding: 0 0 20px 16px;
   margin-left: 5px;
 }
@@ -293,19 +293,19 @@
 .case-timeline strong {
   text-transform: capitalize;
   font-size: 10px;
-  color: #4d7045;
+  color: #605d55;
   margin-bottom: 3px;
 }
 .case-timeline span {
   font-size: 11px;
 }
 .case-timeline time {
-  color: #879186;
+  color: #928e85;
   font-size: 9px;
   margin-top: 3px;
 }
 .case-privacy {
-  color: #6f806f;
+  color: #7f7a70;
   padding: 0 5px;
 }
 .case-client-layout {
@@ -313,8 +313,8 @@
   margin: 0 auto;
 }
 .case-upload-box {
-  border: 1px dashed #afc09f;
-  background: #f7f9f3;
+  border: 1px dashed #b4b1ab;
+  background: #f3f8f9;
   border-radius: 7px;
   padding: 18px;
   display: flex;
@@ -323,7 +323,7 @@
   margin-top: 18px;
 }
 .case-upload-box > svg {
-  color: #648251;
+  color: #706c63;
   flex-shrink: 0;
 }
 .case-upload-box > div {
@@ -336,7 +336,7 @@
   overflow-wrap: anywhere;
 }
 .case-upload-box small {
-  color: #7d8b7a;
+  color: #8a857b;
   margin-top: 4px;
   font-size: 10px;
 }
@@ -358,7 +358,7 @@
   min-height: 38px;
 }
 .case-engine {
-  border-top: 1px solid #e5e9df;
+  border-top: 1px solid #e8e6e0;
   margin-top: 22px;
   padding-top: 10px;
   display: flex;
@@ -367,7 +367,7 @@
   flex-wrap: wrap;
 }
 .case-engine > span {
-  color: #728271;
+  color: #817c72;
   font-size: 10px;
   font-weight: 700;
 }
@@ -380,7 +380,7 @@
   gap: 5px;
 }
 .case-engine small {
-  color: #829083;
+  color: #908c82;
   font-size: 10px;
 }
 .case-spin {
@@ -438,7 +438,7 @@
 }
 .case-source-text {
   margin: 14px 0;
-  border: 1px solid var(--border, #ddd7cd);
+  border: 1px solid var(--border, #d8d6d2);
   border-radius: 8px;
   padding: 12px;
 }
@@ -453,4 +453,11 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   font: 12px/1.7 monospace;
+}
+.case-role-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rv-text-2);
+  font-weight: 600;
 }

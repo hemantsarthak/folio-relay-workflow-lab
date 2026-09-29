@@ -1,9 +1,9 @@
 .access-audit {
-  color: #24343c;
+  color: #2e2f32;
 }
 .audit-intro {
-  background: #e7ede9;
-  border: 1px solid #d7e0d9;
+  background: #edebe7;
+  border: 1px solid #e1ded6;
   border-radius: 12px;
   padding: 27px 31px;
   display: flex;
@@ -13,7 +13,7 @@
   margin-bottom: 19px;
 }
 .audit-eyebrow {
-  color: #617869;
+  color: #736f66;
   font-size: 9px;
   letter-spacing: 1.6px;
   font-weight: 750;
@@ -26,7 +26,7 @@
 }
 .audit-intro p {
   max-width: 620px;
-  color: #63736c;
+  color: #716e65;
   line-height: 1.55;
   font-size: 12px;
 }
@@ -36,8 +36,8 @@
   width: 61px;
   height: 61px;
   border-radius: 14px;
-  background: #d4e3d8;
-  color: #35644c;
+  background: #e1ded6;
+  color: #355e64;
   flex-shrink: 0;
 }
 .audit-sources {
@@ -46,7 +46,7 @@
   gap: 14px;
 }
 .audit-source {
-  border: 1px solid #e0e5e2;
+  border: 1px solid #e7e4de;
   border-radius: 10px;
   background: #fff;
   padding: 21px;
@@ -57,12 +57,12 @@
   position: absolute;
   top: 21px;
   right: 21px;
-  color: #9baaa5;
+  color: #a8a59d;
   font-size: 11px;
   font-weight: 700;
 }
 .audit-source > svg {
-  color: #d5683d;
+  color: #1b6874;
   margin-bottom: 14px;
 }
 .audit-source h3 {
@@ -70,14 +70,14 @@
   margin-bottom: 8px;
 }
 .audit-source p {
-  color: #77858a;
+  color: #888479;
   font-size: 10px;
   line-height: 1.6;
   min-height: 37px;
 }
 .audit-source code {
   overflow-wrap: anywhere;
-  color: #4b626a;
+  color: #605d55;
 }
 .audit-upload {
   margin-top: 17px;
@@ -85,7 +85,7 @@
   align-items: center;
   gap: 8px;
   max-width: 100%;
-  border: 1px solid #d4dddc;
+  border: 1px solid #dbd9d6;
   border-radius: 6px;
   padding: 9px 12px;
   font-size: 11px;
@@ -94,7 +94,7 @@
   overflow-wrap: anywhere;
 }
 .audit-upload:hover {
-  background: #f3f7f6;
+  background: #f7f6f3;
 }
 .audit-upload input {
   position: absolute;
@@ -110,7 +110,7 @@
   margin: 19px 0;
 }
 .audit-controls > span {
-  color: #819095;
+  color: #928e84;
   font-size: 10px;
   margin-left: auto;
 }
@@ -127,36 +127,36 @@
   font-weight: 700;
 }
 .audit-primary {
-  background: #d7653e;
+  background: #1b6874;
   color: #fff;
 }
 .audit-primary:hover {
-  background: #c25331;
+  background: #1b6874;
 }
 .audit-secondary {
   background: #fff;
-  border: 1px solid #d8e0df;
-  color: #33474f;
+  border: 1px solid #e2ded6;
+  color: #45433d;
 }
 .audit-secondary:hover {
-  background: #edf3f1;
+  background: #f2f1ee;
 }
 .audit-alert {
   padding: 11px 14px;
-  background: #e7f2e9;
-  border: 1px solid #bed8c3;
+  background: #efeeea;
+  border: 1px solid #ceccc8;
   border-radius: 7px;
   margin: 12px 0;
   font-size: 11px;
   line-height: 1.5;
-  color: #306044;
+  color: #305a60;
   display: flex;
   gap: 8px;
 }
 .audit-alert.error {
-  background: #fff0e9;
-  border-color: #edc4b4;
-  color: #91402e;
+  background: #f9f4ef;
+  border-color: #e5d1bc;
+  color: #94392b;
 }
 .audit-alert svg {
   flex-shrink: 0;
@@ -168,7 +168,7 @@
   margin: 24px 0 28px;
 }
 .audit-summary > div {
-  border: 1px solid #e0e6e4;
+  border: 1px solid #e7e5df;
   background: #fff;
   border-radius: 8px;
   padding: 17px 19px;
@@ -179,7 +179,7 @@
   display: block;
 }
 .audit-summary span {
-  color: #75858a;
+  color: #878378;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 9px;
@@ -190,7 +190,7 @@
   margin: 5px 0;
 }
 .audit-summary small {
-  color: #8a989c;
+  color: #99968d;
   font-size: 10px;
 }
 .audit-results-title {
@@ -215,14 +215,14 @@
 }
 .audit-finding {
   min-width: 0;
-  border: 1px solid #e6dfdc;
-  border-top: 3px solid #d96c43;
+  border: 1px solid #e6e3dc;
+  border-top: 3px solid #1b6874;
   background: #fff;
   border-radius: 8px;
   padding: 20px;
 }
 .audit-finding.noted {
-  border-top-color: #6d9b7a;
+  border-top-color: #8b877d;
 }
 .audit-finding-head {
   display: flex;
@@ -232,20 +232,20 @@
   align-items: center;
 }
 .audit-finding-type {
-  color: #aa5d42;
+  color: #1b6874;
   font-size: 9px;
   letter-spacing: 1px;
   font-weight: 800;
 }
 .audit-finding-state {
-  color: #7c8b8d;
+  color: #8c877d;
   font-size: 10px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 .audit-finding.noted .audit-finding-state {
-  color: #3b7954;
+  color: #3b7179;
 }
 .audit-finding h4 {
   font-size: 17px;
@@ -257,12 +257,12 @@
   margin-top: 10px;
 }
 .audit-finding .audit-person {
-  color: #76878b;
+  color: #888479;
   margin-top: 0;
   overflow-wrap: anywhere;
 }
 .audit-next {
-  background: #f5f7f6;
+  background: #f7f7f5;
   border-radius: 6px;
   padding: 12px;
   font-size: 11px;
@@ -271,14 +271,14 @@
 }
 .audit-next strong {
   display: block;
-  color: #72848a;
+  color: #868176;
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 4px;
 }
 .audit-finding > small {
-  color: #8b999e;
+  color: #9b978e;
   font-size: 10px;
 }
 .audit-note-row {
@@ -291,7 +291,7 @@
 }
 .audit-note-row textarea {
   width: 100%;
-  border: 1px solid #d7dedd;
+  border: 1px solid #e0ddd5;
   border-radius: 6px;
   padding: 10px;
   resize: vertical;
@@ -299,16 +299,16 @@
   line-height: 1.45;
 }
 .audit-note-row button {
-  background: #294d54;
+  background: #294e54;
   color: #fff;
   padding: 9px 12px;
 }
 .audit-note-row button:hover {
-  background: #193d44;
+  background: #193e44;
 }
 .audit-recorded-note {
-  border-left: 3px solid #6d9b7a;
-  background: #eff7f0;
+  border-left: 3px solid #8b877d;
+  background: #f0f5f6;
   padding: 10px 12px;
   margin-top: 16px;
   font-size: 11px;
@@ -316,27 +316,27 @@
 }
 .audit-recorded-note small {
   display: block;
-  color: #789081;
+  color: #8b877d;
   margin-top: 5px;
 }
 .audit-empty {
-  border: 1px dashed #cad7d4;
+  border: 1px dashed #d3d2ce;
   border-radius: 9px;
   padding: 28px;
   background: #fbfdfc;
   text-align: center;
-  color: #718186;
+  color: #837e74;
   line-height: 1.5;
   font-size: 12px;
 }
 .audit-empty > svg {
   display: block;
   margin: 0 auto 10px;
-  color: #8aa69b;
+  color: #9e9a92;
 }
 .audit-empty strong {
   display: block;
-  color: #354a50;
+  color: #46443f;
   margin-bottom: 5px;
 }
 .audit-empty p {
@@ -345,7 +345,7 @@
 }
 .audit-disclaimer {
   font-size: 10px;
-  color: #819095;
+  color: #928e84;
   line-height: 1.6;
   margin-top: 18px;
   max-width: 740px;

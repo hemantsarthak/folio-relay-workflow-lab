@@ -3,22 +3,70 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Page not found · Workflow lab</title>
+    <title>Page not found · Folio &amp; Relay</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #1b1c1e;
+        color: #c8cacf;
+        font:
+          16px/1.6 Inter,
+          "Segoe UI",
+          system-ui,
+          sans-serif;
+        padding: 24px;
+      }
+      main {
+        max-width: 560px;
+        text-align: center;
+      }
+      h1 {
+        font:
+          400 44px/1.1 "Iowan Old Style",
+          "Palatino Linotype",
+          Palatino,
+          Georgia,
+          serif;
+        color: #eceef2;
+        margin: 0 0 14px;
+      }
+      p {
+        color: #999ba0;
+        margin: 0 0 28px;
+      }
+      nav {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      a {
+        border: 1px solid #44464b;
+        border-radius: 6px;
+        padding: 9px 16px;
+        color: #eceef2;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      a:first-child {
+        background: #f0f1f5;
+        color: #1b1c1e;
+        border-color: #f0f1f5;
+      }
+    </style>
   </head>
-  <body
-    style="
-      font-family: system-ui;
-      max-width: 650px;
-      margin: 60px auto;
-      padding: 24px;
-      background: #f5f3ed;
-      color: #21352b;
-    "
-  >
-    <h1>That page isn't here.</h1>
-    <p>
-      <a href="/">Open the portfolio</a>, <a href="/apps/tax/">Folio</a>, or
-      <a href="/apps/it/">Relay</a>.
-    </p>
+  <body>
+    <main>
+      <h1>That page isn’t here.</h1>
+      <p>The link may be old. Everything lives in one of these three places.</p>
+      <nav>
+        <a href="/">Portfolio home</a>
+        <a href="/apps/tax/">Folio</a>
+        <a href="/apps/it/">Relay</a>
+      </nav>
+    </main>
   </body>
 </html>

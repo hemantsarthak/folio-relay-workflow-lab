@@ -1,16 +1,32 @@
 .live-access {
-  margin: 12px 0;
-  padding: 12px;
-  border: 1px solid #9baca455;
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border: 1px solid #ebe9e3;
   border-radius: 10px;
-  font-size: 12px;
+  background: #fff;
+  font-size: 13px;
+  color: #615d51;
 }
 .live-access summary {
   cursor: pointer;
   font-weight: 600;
+  color: #141310;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9c5ba;
+}
+.live-dot.on {
+  background: #3f9a6c;
 }
 .live-access p {
-  line-height: 1.5;
+  line-height: 1.55;
+  max-width: 720px;
 }
 .live-access form {
   display: flex;
@@ -19,14 +35,22 @@
 }
 .live-access input {
   min-width: 0;
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #87958c;
+  flex: 1 1 220px;
+  max-width: 320px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #dedad0;
 }
 .live-access button {
-  border: 1px solid #87958c;
-  border-radius: 5px;
-  padding: 6px 10px;
+  border: 1px solid #0e4c55;
+  background: #0e4c55;
+  color: #f5f3ed;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 7px 14px;
   cursor: pointer;
+}
+.live-access button[type="button"] {
+  background: transparent;
+  color: #0e4c55;
 }

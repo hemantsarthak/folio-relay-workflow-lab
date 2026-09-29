@@ -6,7 +6,7 @@ Open `/apps/it/` using the repository's shared development server. Relay uses Re
 
 ## People and access walkthrough
 
-Open **People & access**. Search the synthetic directory, add or edit an employee, record an app or device assignment, and document status changes with operator notes. Switch to **Employee view** to see that person's equipment and linked support tickets, then create a support request with their name and team prefilled. The preview is for demonstration; it does not authenticate a person or enforce roles.
+Open **People & access**. Search the synthetic directory, add or edit an employee, record an app or device assignment, and document status changes with operator notes. Use **See … Help portal** to open the employee side for that person: their equipment, their requests with progress, and a request form that creates a routed ticket in the Support queue. The preview is for demonstration; it does not authenticate a person or enforce roles.
 
 Mark an employee departed to open an offboarding worklist. **Audit directory snapshot** passes the simulated roster, account, and device state to the access audit. Active access and assigned equipment appear as findings; record disabled/returned states in the directory and take another snapshot to see the new simulated result. No IdP, SaaS, or MDM API is called. The directory and tickets persist in this browser's local storage and can be reset separately.
 

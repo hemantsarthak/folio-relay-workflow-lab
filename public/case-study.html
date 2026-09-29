@@ -14,9 +14,9 @@
       }
       body {
         margin: 0;
-        background: #f5f3ed;
-        color: #21352b;
-        font-family: system-ui, sans-serif;
+        background: #f3f2ef;
+        color: #292a2d;
+        font-family: Inter, "Segoe UI", system-ui, sans-serif;
       }
       main,
       header,
@@ -29,21 +29,27 @@
         display: flex;
         justify-content: space-between;
         gap: 20px;
-        border-bottom: 1px solid #d8dfd1;
+        border-bottom: 1px solid #dad9d6;
       }
       a {
-        color: #315e44;
+        color: #31585e;
         text-underline-offset: 4px;
       }
       h1 {
         font:
-          normal clamp(36px, 6vw, 62px)/1.1 Georgia,
+          normal clamp(36px, 6vw, 62px)/1.1 "Iowan Old Style",
+          "Palatino Linotype",
+          Palatino,
+          Georgia,
           serif;
         max-width: 750px;
       }
       h2 {
         font:
-          normal 30px Georgia,
+          normal 30px "Iowan Old Style",
+          "Palatino Linotype",
+          Palatino,
+          Georgia,
           serif;
         margin-top: 8px;
       }
@@ -54,11 +60,11 @@
       li {
         font-size: 15px;
         line-height: 1.8;
-        color: #57685c;
+        color: #65625a;
       }
       section {
         background: #fffefa;
-        border: 1px solid #d9dfd2;
+        border: 1px solid #dbd9d6;
         padding: 28px;
         border-radius: 15px;
         margin: 22px 0;
@@ -67,7 +73,7 @@
         font-size: 11px;
         letter-spacing: 2px;
         font-weight: 700;
-        color: #6c7c67;
+        color: #78746b;
       }
       .actions {
         display: flex;
@@ -77,7 +83,7 @@
       }
       .actions a {
         padding: 10px 15px;
-        background: #e6eddf;
+        background: #eae8e2;
         border-radius: 7px;
       }
       .decisions {
@@ -86,7 +92,7 @@
         gap: 20px;
       }
       details {
-        border-top: 1px solid #d9dfd2;
+        border-top: 1px solid #dbd9d6;
         padding-top: 16px;
         margin-top: 20px;
       }
@@ -99,11 +105,11 @@
       }
       footer {
         font-size: 12px;
-        color: #6c7c67;
+        color: #78746b;
       }
       a:focus-visible,
       summary:focus-visible {
-        outline: 3px solid #ab713a;
+        outline: 3px solid #1b6874;
         outline-offset: 4px;
       }
       @media (max-width: 600px) {
@@ -123,7 +129,7 @@
   </head>
   <body>
     <header>
-      <a href="/">HS / Workflow lab</a
+      <a href="/">← Hemant Sarthak · Folio &amp; Relay</a
       ><a href="https://github.com/hemantsarthak/folio-relay-workflow-lab"
         >View source ↗</a
       >
@@ -135,7 +141,8 @@
         I built these projects with AI assistance to demonstrate frontend
         workflow design and first-hire IT operations. They use synthetic records
         and save locally in your browser. Role switches let you explore both
-        sides of a workflow.
+        sides of a workflow. The <a href="/#jev">portfolio home</a> explains
+        where Jev fits and shows the data flow for each app.
       </p>
       <section>
         <span class="eyebrow">01 / FRONTEND ENGINEERING</span>
@@ -161,13 +168,19 @@
             expects 2025.
           </li>
           <li>
-            Request the W-2 from the checklist, create it, and issue the message
-            in Preparer view.
+            Follow the step guide at the top: issue the 2025 K-1 request as the
+            preparer, then press <em>Answer as Alex</em> to switch to the
+            client’s portal.
           </li>
           <li>
-            Switch to Client view and use the synthetic response. Return to
-            Preparer view, inspect the year excerpt, record a review note, and
-            close the request. The checklist updates.
+            Use the synthetic sample. Folio returns you to the preparer view
+            with the routing suggestion and year excerpt. Record a review note
+            and close the request; the checklist marks the K-1 verified.
+          </li>
+          <li>
+            Request the missing W-2 from the checklist and repeat the loop, this
+            time with <em>Jev live</em> selected in the sidebar if you have a
+            reviewer code.
           </li>
           <li>
             Choose Morgan. The reviewed 1099 is ready for preparer handoff. Edit
@@ -205,8 +218,9 @@
         <h2>Relay: owning the follow-through</h2>
         <p>
           IT support needs a person, an asset or account, evidence, and a next
-          step. Relay connects those records with a directory, employee support
-          preview, offboarding audit, and operations worklist.
+          step. Relay connects those records with an employee help portal, a
+          support queue, a directory, an offboarding audit, and an operations
+          worklist.
         </p>
         <div class="actions">
           <a href="/apps/it/">Try Relay</a
@@ -218,12 +232,18 @@
         <h3>Try this sequence</h3>
         <ol>
           <li>
+            Open the <em>Help portal</em> as Maya, choose “Remote desktop, VPN
+            or Wi-Fi”, tick “Colleagues have the same problem” and send it. Jev
+            or local rules route it immediately; open the Support queue to see
+            it as IT, then assign an owner and watch the portal progress update.
+          </li>
+          <li>
             Choose Jordan in People & access, then audit the directory snapshot.
             The active Slack account and assigned laptop create two offboarding
             findings.
           </li>
           <li>
-            Return to the admin view and record disabled access and returned
+            Back in People & access, record disabled access and returned
             hardware with operator notes. Audit a fresh snapshot to see the
             changed local result.
           </li>

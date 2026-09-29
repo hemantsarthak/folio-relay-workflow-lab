@@ -2,6 +2,12 @@
 
 Two working portfolio projects inspired by Rivet's frontend and IT roles. Independent concepts, not Rivet products. Folio manages multiple client records and document requests through review; Relay manages a simulated employee directory, support queue, and offboarding audit. Both retain their original triage workspaces. Built with React, TypeScript, TanStack Query, Vite, Express, PDF.js and a server-side Jev adapter.
 
+## Live portfolio
+
+[Try Folio and Relay](https://folio-relay-workflow-lab.netlify.app/) · [Reviewer walkthroughs](https://folio-relay-workflow-lab.netlify.app/case-study)
+
+Public workflows use local rules by default. Live Jev is protected by a separate reviewer code; the provider key stays server-side. Each visitor gets a browser-local synthetic workspace. See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment and data boundaries.
+
 ## Run both
 
 Requires Node.js 22.18+ (tested on 22.18) and npm.

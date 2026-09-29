@@ -266,6 +266,12 @@ export default function CaseRoom({
                   </div>
                 </div>
               )}
+              {caseData.initial && (
+                <details className="case-source-text">
+                  <summary>Read original source text</summary>
+                  <pre>{caseData.initial.text}</pre>
+                </details>
+              )}
               <p className="case-explain">
                 {caseData.initial
                   ? "A deterministic year check found the mismatch. No tax conclusion was made from the income amount."
@@ -327,6 +333,10 @@ export default function CaseRoom({
                       </small>
                     </div>
                   </div>
+                  <details className="case-source-text">
+                    <summary>Read response source text</summary>
+                    <pre>{caseData.response.text}</pre>
+                  </details>
                   {caseData.response.reply && (
                     <p className="case-client-reply">
                       Client note: {caseData.response.reply}

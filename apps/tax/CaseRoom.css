@@ -436,3 +436,21 @@
     animation: none;
   }
 }
+.case-source-text {
+  margin: 14px 0;
+  border: 1px solid var(--border, #ddd7cd);
+  border-radius: 8px;
+  padding: 12px;
+}
+.case-source-text summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.case-source-text pre {
+  max-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 12px/1.7 monospace;
+}

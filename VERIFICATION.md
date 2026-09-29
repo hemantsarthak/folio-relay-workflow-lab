@@ -1,5 +1,14 @@
 # Verification record
 
+## September 30, 2026 — published Netlify demo
+
+- Published https://folio-relay-workflow-lab.netlify.app with both React entry points and the serverless decision API. GitHub source is https://github.com/hemantsarthak/folio-relay-workflow-lab. The initial GitHub Actions verification passed (run 36642143753).
+- Hosted HTTPS checks passed for the gallery, both apps, case studies, sample PDF, and PowerShell collector. Downloaded public assets and API configuration were checked against the actual provider key and reviewer code; neither credential was embedded.
+- Live protected OpenCode Zen calls with synthetic data returned `source=jev`, `model=jev-1.13-free`, and W-2 / Identity & access classifications. Missing and invalid reviewer codes returned 401; an unrelated Origin returned 403. Folio's browser UI also displayed a live W-2 result.
+- Hosted Folio browser flow: created Jamie Example, selected expected W-2, created and issued the request, submitted its synthetic sample, recorded a review note, and confirmed 1/1 verified and Resolved after reload. The new response-text viewer displayed the actual synthetic extracted text.
+- Hosted Relay browser flow: recorded separate notes for Slack disablement and laptop return, reducing the simulated directory's open exposures from two to zero. Loaded the shared-session drill and saw two categorized reports grouped by team. Local browser checks also exercised assigned ticket work plans and resolution.
+- Final source changes passed all 32 tests, TypeScript, Vite build, formatting and whitespace checks. Live calls verify the connection on synthetic examples, not classification accuracy. Netlify was published by CLI; automatic Git deployments are not configured. Free-plan variable scopes and administrator access are documented in DEPLOYMENT.md.
+
 ## September 30, 2026 — publication preparation
 
 - `npm run check`: 32 tests passed, TypeScript passed, and the Vite production build completed. New checks cover current-year document readiness, unresolved-question blocking, duplicate request rejection, repeated-ticket grouping, work-plan validation, hosted HTTPS routing, and the protected live-call boundary.

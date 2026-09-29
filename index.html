@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Two working workflow tools by Hemant Sarthak: document review and IT triage, built with React and a Jev decision adapter."
+    />
+    <title>Hemant Sarthak — Workflow lab</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f5f3ed;
+        color: #182d29;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      }
+      header,
+      main,
+      footer {
+        max-width: 1180px;
+        margin: auto;
+        padding: 28px 40px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #dbdfd5;
+        font-size: 13px;
+      }
+      header strong {
+        font-size: 15px;
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: #6f8866;
+        border-radius: 100%;
+        margin-right: 8px;
+      }
+      main {
+        padding-top: 75px;
+      }
+      small {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+        color: #68736b;
+      }
+      h1 {
+        font:
+          normal clamp(42px, 6vw, 76px)/1.02 Georgia,
+          serif;
+        letter-spacing: -2px;
+        max-width: 800px;
+        margin: 20px 0;
+      }
+      p {
+        color: #5d6a63;
+        line-height: 1.7;
+        max-width: 630px;
+      }
+      .projects {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-top: 45px;
+      }
+      article {
+        border: 1px solid #d6dcd1;
+        border-radius: 20px;
+        background: #fffefa;
+        overflow: hidden;
+      }
+      article > a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+      }
+      article > a:focus-visible {
+        outline: 3px solid #b17428;
+        outline-offset: -4px;
+      }
+      .preview {
+        height: 205px;
+        padding: 28px;
+        background: #e5eadf;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .desk-preview {
+        background: #212d34;
+      }
+      .mini {
+        width: 88%;
+        background: #fffefa;
+        border-radius: 9px;
+        box-shadow: 0 12px 28px #17342817;
+        padding: 16px;
+      }
+      .mini-nav {
+        font-size: 12px;
+        font-weight: 700;
+        border-bottom: 1px solid #e2e6dd;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+      }
+      .mini-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 9px 0;
+        font-size: 10px;
+      }
+      .mini-row i {
+        display: block;
+        width: 24px;
+        height: 28px;
+        border: 1px solid #d6ddce;
+        border-radius: 4px;
+      }
+      .mini-row span {
+        flex: 1;
+      }
+      .pill {
+        padding: 4px 8px;
+        border-radius: 5px;
+        background: #e8efdf;
+        color: #4d6641;
+        font-size: 9px;
+      }
+      .amber {
+        background: #fff0d4;
+        color: #826020;
+      }
+      .copy {
+        padding: 28px;
+      }
+      h2 {
+        font:
+          normal 35px Georgia,
+          serif;
+        margin: 5px 0 8px;
+      }
+      .copy p {
+        font-size: 14px;
+        margin: 12px 0 22px;
+      }
+      .tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tags span {
+        border: 1px solid #e0e3da;
+        border-radius: 20px;
+        padding: 4px 9px;
+        font-size: 10px;
+        color: #667267;
+      }
+      .launch {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #e4e7de;
+        margin-top: 22px;
+        padding-top: 18px;
+        font-size: 13px;
+        font-weight: 650;
+      }
+      .launch b {
+        font-size: 22px;
+      }
+      article:hover {
+        border-color: #92a48b;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        font-size: 11px;
+        color: #717c73;
+        padding-top: 38px;
+        padding-bottom: 40px;
+      }
+      footer p {
+        margin: 0;
+        max-width: 600px;
+      }
+      @media (max-width: 650px) {
+        header,
+        main,
+        footer {
+          padding-left: 22px;
+          padding-right: 22px;
+        }
+        header span {
+          max-width: 120px;
+          text-align: right;
+        }
+        main {
+          padding-top: 45px;
+        }
+        .projects {
+          grid-template-columns: 1fr;
+        }
+        footer {
+          flex-direction: column;
+        }
+        .preview {
+          height: 180px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>HS / Hemant Sarthak</strong
+      ><span
+        ><i class="dot"></i
+        ><a href="/case-study.html" style="color: inherit"
+          >Read the case studies</a
+        ></span
+      >
+    </header>
+    <main>
+      <small>Workflow lab / 01—02</small>
+      <h1>Less friction.<br />More work, done.</h1>
+      <p>
+        Two working operations tools for the people behind a tax return. Follow
+        a missing document through client response and review, or take an
+        employee from onboarding records to support and offboarding.
+      </p>
+      <section class="projects" aria-label="Projects">
+        <article>
+          <a href="/apps/tax/"
+            ><div class="preview" aria-hidden="true">
+              <div class="mini">
+                <div class="mini-nav">
+                  ◈ folio
+                  <span style="float: right; color: #78836e"
+                    >DOCUMENT INBOX</span
+                  >
+                </div>
+                <div class="mini-row">
+                  <i></i><span>Wage statement · 2025</span
+                  ><b class="pill">W-2</b>
+                </div>
+                <div class="mini-row">
+                  <i></i><span>Partner distribution</span
+                  ><b class="pill">K-1</b>
+                </div>
+                <div class="mini-row">
+                  <i></i><span>Client attachment</span
+                  ><b class="pill amber">Needs review</b>
+                </div>
+              </div>
+            </div>
+            <div class="copy">
+              <small>01 / Frontend engineering</small>
+              <h2>Folio</h2>
+              <p>
+                A client workspace with document requests, source review, and a
+                checklist that distinguishes missing files from verified
+                evidence.
+              </p>
+              <div class="tags">
+                <span>React + TypeScript</span><span>Client workflow</span
+                ><span>Jev integration</span>
+              </div>
+              <div class="launch">Try the client workspace <b>↗</b></div>
+            </div></a
+          >
+        </article>
+        <article>
+          <a href="/apps/it/"
+            ><div class="preview desk-preview" aria-hidden="true">
+              <div class="mini">
+                <div class="mini-nav">
+                  ↗ relay
+                  <span style="float: right; color: #a97932"
+                    >SUPPORT OPERATIONS</span
+                  >
+                </div>
+                <div class="mini-row">
+                  <b style="color: #cb7346">●</b
+                  ><span>Remote session keeps freezing</span
+                  ><b class="pill amber">Investigating</b>
+                </div>
+                <div class="mini-row">
+                  <b style="color: #708668">●</b><span>DNS lookup</span
+                  ><b class="pill">Passed</b>
+                </div>
+                <div class="mini-row">
+                  <b style="color: #708668">●</b><span>System disk space</span
+                  ><b class="pill">Passed</b>
+                </div>
+              </div>
+            </div>
+            <div class="copy">
+              <small>02 / IT engineering</small>
+              <h2>Relay</h2>
+              <p>
+                Employee access, offboarding checks, and support ownership.
+                Investigate repeated reports with a queue that carries the next
+                step.
+              </p>
+              <div class="tags">
+                <span>PowerShell collector</span><span>Lifecycle + audit</span
+                ><span>Jev integration</span>
+              </div>
+              <div class="launch">Try the IT workspace <b>↗</b></div>
+            </div></a
+          >
+        </article>
+      </section>
+      <p style="margin-top: 30px">
+        Start with synthetic examples. Each browser gets its own workspace;
+        changes stay on your device.
+        <a href="/case-study.html" style="color: #355c45"
+          >See the demonstration steps and engineering decisions ↗</a
+        >
+        ·
+        <a
+          href="https://github.com/hemantsarthak/folio-relay-workflow-lab"
+          style="color: #355c45"
+          >Source code ↗</a
+        >
+      </p>
+    </main>
+    <footer>
+      <p>
+        Built with AI assistance by Hemant Sarthak. Synthetic workflow demos;
+        document routing uses local rules by default. Hosted live Jev access
+        requires a reviewer code and server configuration.
+      </p>
+      <p>
+        Independent concepts inspired by Rivet’s roles.<br />Not affiliated with
+        or endorsed by Rivet.
+      </p>
+    </footer>
+  </body>
+</html>

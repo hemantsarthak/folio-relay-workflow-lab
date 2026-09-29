@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "collectedAt": "2026-09-22T09:00:00Z",
+  "platform": "Windows",
+  "checks": [
+    {
+      "name": "Available memory",
+      "status": "warn",
+      "value": "6% free",
+      "detail": "Synthetic example. A snapshot only; does not establish a root cause."
+    },
+    {
+      "name": "System disk space",
+      "status": "pass",
+      "value": "34% free",
+      "detail": "Synthetic example."
+    },
+    {
+      "name": "DNS resolution",
+      "status": "pass",
+      "value": "Resolved",
+      "detail": "Synthetic example. No network request was made."
+    },
+    {
+      "name": "Configured endpoint",
+      "status": "unknown",
+      "value": "Not requested",
+      "detail": "Synthetic example. Endpoint health was not tested."
+    }
+  ],
+  "summary": "Synthetic sample report. One check needs review; no remediation performed."
+}

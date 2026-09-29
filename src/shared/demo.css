@@ -1,0 +1,32 @@
+.live-access {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #9baca455;
+  border-radius: 10px;
+  font-size: 12px;
+}
+.live-access summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.live-access p {
+  line-height: 1.5;
+}
+.live-access form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.live-access input {
+  min-width: 0;
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #87958c;
+}
+.live-access button {
+  border: 1px solid #87958c;
+  border-radius: 5px;
+  padding: 6px 10px;
+  cursor: pointer;
+}

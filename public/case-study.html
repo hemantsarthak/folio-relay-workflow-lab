@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Folio and Relay: working portfolio demonstrations, engineering decisions, and evidence."
+    />
+    <title>Folio & Relay · Engineering case studies</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f5f3ed;
+        color: #21352b;
+        font-family: system-ui, sans-serif;
+      }
+      main,
+      header,
+      footer {
+        max-width: 980px;
+        margin: auto;
+        padding: 28px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid #d8dfd1;
+      }
+      a {
+        color: #315e44;
+        text-underline-offset: 4px;
+      }
+      h1 {
+        font:
+          normal clamp(36px, 6vw, 62px)/1.1 Georgia,
+          serif;
+        max-width: 750px;
+      }
+      h2 {
+        font:
+          normal 30px Georgia,
+          serif;
+        margin-top: 8px;
+      }
+      h3 {
+        font-size: 17px;
+      }
+      p,
+      li {
+        font-size: 15px;
+        line-height: 1.8;
+        color: #57685c;
+      }
+      section {
+        background: #fffefa;
+        border: 1px solid #d9dfd2;
+        padding: 28px;
+        border-radius: 15px;
+        margin: 22px 0;
+      }
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        color: #6c7c67;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 20px 0;
+      }
+      .actions a {
+        padding: 10px 15px;
+        background: #e6eddf;
+        border-radius: 7px;
+      }
+      .decisions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      details {
+        border-top: 1px solid #d9dfd2;
+        padding-top: 16px;
+        margin-top: 20px;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      ol {
+        padding-left: 22px;
+      }
+      footer {
+        font-size: 12px;
+        color: #6c7c67;
+      }
+      a:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid #ab713a;
+        outline-offset: 4px;
+      }
+      @media (max-width: 600px) {
+        main,
+        header,
+        footer {
+          padding: 20px;
+        }
+        section {
+          padding: 20px;
+        }
+        .decisions {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="/">HS / Workflow lab</a
+      ><a href="https://github.com/hemantsarthak/folio-relay-workflow-lab"
+        >View source ↗</a
+      >
+    </header>
+    <main>
+      <span class="eyebrow">HEMANT SARTHAK · APPLICATION PROJECTS</span>
+      <h1>Follow the work.<br />Inspect the decisions.</h1>
+      <p>
+        I built these projects with AI assistance to demonstrate frontend
+        workflow design and first-hire IT operations. They use synthetic records
+        and save locally in your browser. Role switches let you explore both
+        sides of a workflow.
+      </p>
+      <section>
+        <span class="eyebrow">01 / FRONTEND ENGINEERING</span>
+        <h2>Folio: getting a packet ready for review</h2>
+        <p>
+          A missing document creates a sequence of work: identify the gap, ask
+          the right client, receive a replacement, inspect evidence, and record
+          a human decision. Folio keeps that sequence separate for every client
+          and tax year.
+        </p>
+        <div class="actions">
+          <a href="/apps/tax/">Try Folio</a
+          ><a
+            href="https://github.com/hemantsarthak/folio-relay-workflow-lab/tree/main/apps/tax"
+            >Inspect the code</a
+          >
+        </div>
+        <h3>Try this sequence</h3>
+        <ol>
+          <li>
+            Choose Alex. The checklist shows a missing W-2 and an open K-1
+            request. The K-1 source on file is from 2024, while the request
+            expects 2025.
+          </li>
+          <li>
+            Request the W-2 from the checklist, create it, and issue the message
+            in Preparer view.
+          </li>
+          <li>
+            Switch to Client view and use the synthetic response. Return to
+            Preparer view, inspect the year excerpt, record a review note, and
+            close the request. The checklist updates.
+          </li>
+          <li>
+            Choose Morgan. The reviewed 1099 is ready for preparer handoff. Edit
+            the profile's tax year to 2026: the 2025 evidence becomes
+            insufficient for that year.
+          </li>
+        </ol>
+        <details>
+          <summary>Engineering decisions and boundaries</summary>
+          <div class="decisions">
+            <div>
+              <h3>State and evidence</h3>
+              <p>
+                Typed transitions govern requests. Wrong-year and ambiguous
+                responses stay open. Readiness derives from reviewed
+                current-year questions, and extra open requests still block
+                handoff. Duplicate open requests for the same client, type, and
+                year are rejected.
+              </p>
+            </div>
+            <div>
+              <h3>Useful failure handling</h3>
+              <p>
+                PDF parsing happens in the browser. Scanned or unreadable
+                documents need attention. Live provider failures stay visible.
+                Exports omit raw document text. Browser persistence is per
+                device; the role preview has no production authentication.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+      <section>
+        <span class="eyebrow">02 / IT ENGINEERING</span>
+        <h2>Relay: owning the follow-through</h2>
+        <p>
+          IT support needs a person, an asset or account, evidence, and a next
+          step. Relay connects those records with a directory, employee support
+          preview, offboarding audit, and operations worklist.
+        </p>
+        <div class="actions">
+          <a href="/apps/it/">Try Relay</a
+          ><a
+            href="https://github.com/hemantsarthak/folio-relay-workflow-lab/tree/main/apps/it"
+            >Inspect the code</a
+          >
+        </div>
+        <h3>Try this sequence</h3>
+        <ol>
+          <li>
+            Choose Jordan in People & access, then audit the directory snapshot.
+            The active Slack account and assigned laptop create two offboarding
+            findings.
+          </li>
+          <li>
+            Return to the admin view and record disabled access and returned
+            hardware with operator notes. Audit a fresh snapshot to see the
+            changed local result.
+          </li>
+          <li>
+            Open Operations review and load the shared-session drill. Two
+            additional tax-team reports form a repeated Remote desktop pattern.
+          </li>
+          <li>
+            Open one ticket, record an owner and an investigation plan, then
+            resolve it. Return to Operations review to see the open work and
+            pattern update.
+          </li>
+        </ol>
+        <details>
+          <summary>Engineering decisions and boundaries</summary>
+          <div class="decisions">
+            <div>
+              <h3>Traceable operations</h3>
+              <p>
+                Access and device changes require operator notes. The CSV audit
+                reconciles normalized source exports. Employee-created tickets
+                use stable directory IDs. Ticket work plans feed the operations
+                summary and export.
+              </p>
+            </div>
+            <div>
+              <h3>Careful automation</h3>
+              <p>
+                The PowerShell collector reads local diagnostic observations.
+                Runbooks guide an operator. Repeated reports are a signal to
+                investigate shared services. Identity, device, and account
+                changes are simulated; actual administration needs authorized
+                integrations.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+      <section>
+        <span class="eyebrow">VERIFICATION</span>
+        <h2>Evidence you can inspect</h2>
+        <p>
+          The repository includes domain tests, API boundary tests, provider
+          fixtures, a production build, and a verification record. Netlify
+          serves the pages and a serverless decision API. Local rule routing
+          works immediately; protected live Jev can be enabled with server-side
+          environment variables.
+        </p>
+        <div class="actions">
+          <a
+            href="https://github.com/hemantsarthak/folio-relay-workflow-lab/blob/main/VERIFICATION.md"
+            >Read verification</a
+          ><a
+            href="https://github.com/hemantsarthak/folio-relay-workflow-lab/actions"
+            >Build checks</a
+          ><a
+            href="https://github.com/hemantsarthak/folio-relay-workflow-lab/blob/main/PORTFOLIO-NOTES.md"
+            >Read project reasoning</a
+          >
+        </div>
+        <p>
+          These demos establish working synthetic flows. They do not establish
+          production adoption, tax accuracy, or measured time savings.
+        </p>
+      </section>
+    </main>
+    <footer>
+      Independent concepts inspired by Rivet's roles. Built with AI assistance.
+      Not affiliated with Rivet.
+    </footer>
+  </body>
+</html>
